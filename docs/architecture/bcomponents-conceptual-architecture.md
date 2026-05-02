@@ -61,6 +61,28 @@ Rules:
   - CSS variable overrides
   - published view overrides (last resort)
 
+#### Recipe architecture (separation of concerns)
+Keep recipes fast and maintainable by splitting concerns into small “pieces” that are composed:
+- base: layout/typography/focus ring defaults
+- size: spacing + font-size
+- variant: solid/outline/ghost/link mapping
+- tone: semantic intent mapping (primary/success/danger/etc)
+- state: disabled/loading/fullWidth/invalid
+
+The recipe entrypoint SHOULD be a pure function:
+- input: a small associative array (`variant/size/tone/...`)
+- output: a single class string
+- no I/O, no container calls, no config reads
+
+Recommended file organization for long recipes:
+- `src/Support/Styles/Button/ButtonBase.php`
+- `src/Support/Styles/Button/ButtonSizes.php`
+- `src/Support/Styles/Button/ButtonVariants.php`
+- `src/Support/Styles/Button/ButtonStates.php`
+- `src/Support/Styles/Button/ButtonStyles.php` (composes the above)
+
+This improves DX because each file stays small and searchable, and changes are localized (e.g. adding a new size does not touch variant logic).
+
 ### Layer 4: Interaction layer (progressive enhancement)
 Responsibilities:
 - native HTML semantics first
@@ -140,6 +162,17 @@ Each component should carry one of these labels in docs/metadata:
 - Blade + Alpine
 - Livewire safe
 - Livewire optimized
+
+## Client-side-first (no server state) strategy
+Many apps need fast UI with zero server roundtrips for UI state. bComponents should support this by default:
+- primitives remain plain Blade (no JS required)
+- interactive shells use Alpine for local state (open/close/tab selection), without requiring Livewire
+- Livewire is additive, used only when server-backed state is needed
+
+Guidance:
+- shells MUST behave correctly when used inside Livewire (rerender-safe Alpine state)
+- avoid global JS frameworks and heavy runtime dependencies; keep the JS surface minimal and optional
+- the default install path should work without any frontend build (publish + include assets)
 
 ## Performance Principles
 - Render: keep trees shallow, avoid unnecessary nesting
