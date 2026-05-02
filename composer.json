@@ -1,0 +1,46 @@
+{
+    "name": "zakarialabib/bcomponents",
+    "description": "Laravel Blade components using Livewire and Alpine.js",
+    "type": "library",
+    "require": {
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/view": "^10.0|^11.0|^12.0",
+        "illuminate/config": "^10.0|^11.0|^12.0",
+        "livewire/livewire": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0|^11.0",
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpstan/phpstan": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zakarialabib\\BComponents\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zakarialabib\\BComponents\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zakarialabib\\BComponents\\BComponentsServiceProvider"
+            ],
+            "aliases": {
+                "BComponents": "Zakarialabib\\BComponents\\Facades\\BComponents"
+            }
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zakaria Labib",
+            "email": "zakarialabib@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
