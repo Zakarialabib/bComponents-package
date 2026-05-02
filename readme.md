@@ -80,6 +80,11 @@ module.exports = {
 
 BComponents provides a set of ready-to-use Blade components that you can use in your Laravel application. All components are prefixed with `b-` by default (configurable in the config file).
 
+### Component Catalog
+
+The full component catalog (all Blade + Livewire components, with props/slots/a11y/dependencies and copy/paste examples) lives under:
+- `docs/components/index.md`
+
 #### Alert Component
 
 ```blade
@@ -89,10 +94,10 @@ BComponents provides a set of ready-to-use Blade components that you can use in 
 ```
 
 Props:
-- `type`: The type of alert (`success`, `info`, `warning`, `danger`, `primary`, `secondary`).
+- `type`: `info`, `success`, `warning`, `danger`, `error`.
 - `dismissible`: Whether the alert can be dismissed.
-- `icon`: The icon to display in the alert.
-- `title`: The title of the alert.
+- `title`: Optional title.
+- `icon`: Optional icon identifier (string).
 
 #### Button Component
 
@@ -132,47 +137,53 @@ Form controls:
 #### Card Component
 
 ```blade
-<x-b-card title="Card Title" footer="Card Footer">
+<x-b-card title="Card Title" :show-footer="true">
     This is the card content.
+
+    <x-slot:footer>
+        Card Footer
+    </x-slot:footer>
 </x-b-card>
 ```
 
 Props:
 - `title`: The title of the card.
 - `subtitle`: The subtitle of the card.
-- `footer`: The footer of the card.
-- `image`: The URL of an image to display in the card.
-- `imageAlt`: The alt text for the image.
-- `imagePosition`: The position of the image (`top`, `bottom`).
-- `headerClass`: Additional classes for the card header.
-- `bodyClass`: Additional classes for the card body.
-- `footerClass`: Additional classes for the card footer.
+- `showHeader`: Whether to show the header (default `true`).
+- `showFooter`: Whether to render the footer slot (default `false`).
+
+Slots:
+- `default`: Card body content.
+- `header`: Optional right-side header content.
+- `footer`: Footer content (only rendered when `showFooter` is true).
 
 #### Input Component
 
 ```blade
-<x-b-input
-    name="email"
-    label="Email Address"
-    type="email"
-    placeholder="Enter your email"
-    required
-/>
+<x-b-form-group name="email" label="Email Address" required>
+    <x-b-input
+        name="email"
+        type="email"
+        placeholder="Enter your email"
+        required
+    />
+</x-b-form-group>
 ```
 
 Props:
 - `name`: The name of the input.
-- `id`: The ID of the input (defaults to the name).
+- `id`: The ID of the input.
 - `type`: The type of input (`text`, `email`, `password`, `number`, etc.).
-- `label`: The label for the input.
 - `value`: The value of the input.
 - `placeholder`: The placeholder text.
 - `required`: Whether the input is required.
 - `disabled`: Whether the input is disabled.
 - `readonly`: Whether the input is readonly.
-- `autocomplete`: The autocomplete attribute.
-- `help`: Help text to display below the input.
-- `error`: Error message to display.
+- `autofocus`: Whether the input should autofocus.
+- `invalid`: Whether the input should render in an invalid state.
+- `size`: Input size (`sm`, `md`, `lg`).
+- `prefix`/`suffix`: Optional text addons.
+- `prefixIcon`/`suffixIcon`: Optional icon identifiers (string).
 
 #### Dropdown Component
 

@@ -57,7 +57,7 @@ class GridComponent extends BaseComponent
      */
     public function render(): \Illuminate\View\View
     {
-        return view('bcomponents::components.grid');
+        return view('bcomponents::components.grid', $this->viewData());
     }
 
     /**

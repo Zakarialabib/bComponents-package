@@ -27,7 +27,7 @@ class TableHeaderComponent extends BaseComponent
      */
     public function render(): \Illuminate\View\View
     {
-        return view('bcomponents::components.table.header');
+        return view('bcomponents::components.table.header', $this->viewData());
     }
 
     /**
@@ -46,7 +46,7 @@ class TableHeaderComponent extends BaseComponent
     public function baseClasses(): array
     {
         return [
-            'bg-gray-50',
+            'bg-[color:var(--b-color-surface-muted)]',
             $this->sticky ? 'sticky top-0 z-10' : '',
         ];
     }

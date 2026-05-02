@@ -57,7 +57,7 @@ class DividerComponent extends BaseComponent
      */
     public function render(): \Illuminate\View\View
     {
-        return view('bcomponents::components.divider');
+        return view('bcomponents::components.divider', $this->viewData());
     }
 
     /**
@@ -93,7 +93,15 @@ class DividerComponent extends BaseComponent
      */
     protected function borderColorClasses(): string
     {
-        return 'border-' . $this->color . '-200';
+        return match ($this->color) {
+            'primary' => 'border-[color:var(--b-color-primary)]',
+            'secondary' => 'border-[color:var(--b-color-secondary)]',
+            'success' => 'border-[color:var(--b-color-success)]',
+            'danger' => 'border-[color:var(--b-color-danger)]',
+            'warning' => 'border-[color:var(--b-color-warning)]',
+            'info' => 'border-[color:var(--b-color-info)]',
+            default => 'border-[color:var(--b-color-border)]',
+        };
     }
 
     /**

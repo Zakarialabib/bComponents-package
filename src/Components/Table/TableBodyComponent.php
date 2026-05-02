@@ -27,7 +27,7 @@ class TableBodyComponent extends BaseComponent
      */
     public function render(): \Illuminate\View\View
     {
-        return view('bcomponents::components.table.body');
+        return view('bcomponents::components.table.body', $this->viewData());
     }
 
     /**
@@ -46,9 +46,9 @@ class TableBodyComponent extends BaseComponent
     public function baseClasses(): array
     {
         return [
-            'bg-white',
+            'bg-[color:var(--b-color-surface)]',
             'divide-y',
-            'divide-gray-200',
+            'divide-[color:var(--b-color-border)]',
             $this->striped ? 'divide-y-0' : '',
         ];
     }

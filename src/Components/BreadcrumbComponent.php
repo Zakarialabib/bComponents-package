@@ -29,27 +29,15 @@ class BreadcrumbComponent extends BaseComponent
     /**
      * The component's default properties.
      */
-    protected array $props = [
-        'items' => [],
-        'separator' => '/',
-        'showHomeIcon' => true,
-    ];
-
-    /**
-     * Create a new component instance.
-     */
-    public function __construct(array $attributes = [])
-    {
+    public function __construct(
+        array $items = [],
+        string $separator = '/',
+        bool $showHomeIcon = true
+    ) {
         parent::__construct();
-        $this->initializeProps($attributes);
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): \Illuminate\View\View
-    {
-        return view($this->getViewName(), $this->viewData());
+        $this->items = $items;
+        $this->separator = $separator;
+        $this->showHomeIcon = $showHomeIcon;
     }
 
     /**
@@ -76,7 +64,7 @@ class BreadcrumbComponent extends BaseComponent
             'items-center',
             'space-x-2',
             'text-sm',
-            'text-gray-500',
+            'text-[color:var(--b-color-text-muted)]',
         ];
     }
 
@@ -89,7 +77,7 @@ class BreadcrumbComponent extends BaseComponent
             'flex',
             'items-center',
             'space-x-2',
-            $isLast ? 'text-gray-900 font-medium' : 'text-gray-500 hover:text-gray-700',
+            $isLast ? 'text-[color:var(--b-color-text)] font-medium' : 'text-[color:var(--b-color-text-muted)] hover:text-[color:var(--b-color-text)]',
         ];
     }
 
@@ -99,7 +87,7 @@ class BreadcrumbComponent extends BaseComponent
     protected function separatorClasses(): array
     {
         return [
-            'text-gray-400',
+            'text-[color:var(--b-color-text-muted)]',
             'select-none',
         ];
     }

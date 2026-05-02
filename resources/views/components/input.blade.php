@@ -36,7 +36,7 @@
 @if ($hasAddon)
     <div class="flex rounded-md shadow-sm">
         @if ($hasPrefix)
-            <div class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+            <div class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-[color:var(--b-color-border)] bg-[color:var(--b-color-surface-muted)] text-[color:var(--b-color-text-muted)]">
                 @if ($prefixIcon)
                     <x-dynamic-component :component="$prefixIcon" class="h-5 w-5" />
                 @endif
@@ -50,7 +50,7 @@
         <input {{ $componentAttributes }} />
         
         @if ($hasSuffix)
-            <div class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500">
+            <div class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-[color:var(--b-color-border)] bg-[color:var(--b-color-surface-muted)] text-[color:var(--b-color-text-muted)]">
                 @if ($suffixIcon)
                     <x-dynamic-component :component="$suffixIcon" class="h-5 w-5" />
                 @endif

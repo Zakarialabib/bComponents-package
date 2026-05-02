@@ -1,8 +1,16 @@
 :root {
   --b-color-primary: #2563eb;
+  --b-color-on-primary: #ffffff;
+  --b-color-secondary: #64748b;
+  --b-color-success: #16a34a;
+  --b-color-danger: #dc2626;
+  --b-color-warning: #d97706;
+  --b-color-info: #0284c7;
   --b-color-surface: #ffffff;
+  --b-color-surface-muted: #f9fafb;
   --b-color-border: #e5e7eb;
   --b-color-text: #111827;
+  --b-color-text-muted: #6b7280;
   --b-radius-md: 0.5rem;
   --b-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --b-spacing-control-x: 1rem;
@@ -11,7 +19,8 @@
 
 .dark {
   --b-color-surface: #0b1220;
+  --b-color-surface-muted: #0f172a;
   --b-color-border: #1f2937;
   --b-color-text: #f9fafb;
+  --b-color-text-muted: #cbd5e1;
 }
-
