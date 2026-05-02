@@ -41,7 +41,7 @@ class DrawerComponent extends BaseComponent
     /**
      * The component's view name.
      */
-    protected string $view = 'bcomponents::components.drawer';
+    protected ?string $view = 'bcomponents::components.drawer';
     
     /**
      * Create a new component instance.

@@ -111,12 +111,14 @@ class CardComponent extends BaseComponent
         'hover' => 'boolean',
     ];
 
-    /**
-     * The component's base classes.
-     *
-     * @var string
-     */
-    protected string $baseClasses = 'bg-white overflow-hidden';
+    public function baseClasses(): array
+    {
+        return [
+            'bg-[color:var(--b-color-surface)]',
+            'text-[color:var(--b-color-text)]',
+            'overflow-hidden',
+        ];
+    }
 
     /**
      * The component's padding classes.
@@ -186,7 +188,7 @@ class CardComponent extends BaseComponent
         
         $shadowClass = $this->shadowClasses[$this->shadow] ?? $this->shadowClasses['md'];
         $roundedClass = $this->roundedClasses[$this->rounded] ?? $this->roundedClasses['md'];
-        $borderClass = $this->border ? 'border border-gray-200' : '';
+        $borderClass = $this->border ? 'border border-[color:var(--b-color-border)]' : '';
         $hoverClass = $this->hover ? 'transition-shadow duration-300 hover:shadow-lg' : '';
         
         return trim("{$classes} {$shadowClass} {$roundedClass} {$borderClass} {$hoverClass}");
@@ -213,7 +215,7 @@ class CardComponent extends BaseComponent
     {
         $paddingClass = $this->paddingClasses[$this->padding] ?? $this->paddingClasses['md'];
         
-        return "{$paddingClass} border-b border-gray-200";
+        return "{$paddingClass} border-b border-[color:var(--b-color-border)]";
     }
 
     /**
@@ -225,6 +227,6 @@ class CardComponent extends BaseComponent
     {
         $paddingClass = $this->paddingClasses[$this->padding] ?? $this->paddingClasses['md'];
         
-        return "{$paddingClass} border-t border-gray-200 bg-gray-50";
+        return "{$paddingClass} border-t border-[color:var(--b-color-border)]";
     }
 } 

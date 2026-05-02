@@ -50,7 +50,18 @@ abstract class BaseComponent extends Component
      */
     public function __construct()
     {
-        $this->initializeProps([]);
+        $this->applyDefaultProps();
+    }
+
+    protected function applyDefaultProps(): void
+    {
+        foreach ($this->props as $propName => $defaultValue) {
+            if (!property_exists($this, $propName)) {
+                continue;
+            }
+
+            $this->{$propName} = $this->castPropValue($defaultValue, $defaultValue);
+        }
     }
 
     public function withAttributes(array $attributes)
@@ -87,8 +98,13 @@ abstract class BaseComponent extends Component
             // Handle both camelCase and kebab-case attribute names
             $kebabCase = Str::kebab($propName);
 
-            // Value resolution: direct match → kebab-case match → default value
-            $value = $attributes[$propName] ?? $attributes[$kebabCase] ?? $defaultValue;
+            if (array_key_exists($propName, $attributes)) {
+                $value = $attributes[$propName];
+            } elseif (array_key_exists($kebabCase, $attributes)) {
+                $value = $attributes[$kebabCase];
+            } else {
+                continue;
+            }
 
             // Only set if the property exists on the class
             if (property_exists($this, $propName)) {
@@ -248,15 +264,17 @@ abstract class BaseComponent extends Component
     protected function getClasses(): string
     {
         $classes = [];
-        
-        // Add base classes if method exists
-        if (method_exists($this, 'baseClasses')) {
+
+        $baseClassesMethod = new \ReflectionMethod($this, 'baseClasses');
+        if ($baseClassesMethod->getDeclaringClass()->getName() !== self::class) {
             $baseClasses = $this->baseClasses();
             if (is_array($baseClasses)) {
                 $classes = array_merge($classes, $baseClasses);
             } else {
                 $classes[] = (string) $baseClasses;
             }
+        } elseif (property_exists($this, 'baseClasses') && is_string($this->baseClasses) && $this->baseClasses !== '') {
+            $classes[] = $this->baseClasses;
         }
         
         return implode(' ', array_filter($classes));

@@ -6,7 +6,7 @@
     'bodyClasses' => '',
     'headerClasses' => '',
     'footerClasses' => '',
-    'classes' => 'p-6 bg-white rounded-lg shadow-md',
+    'classes' => '',
 ])
 
 <div {{ $attributes->merge(['class' => $classes]) }}>
@@ -14,13 +14,13 @@
         <div class="{{ $headerClasses }}">
             <div>
                 @if ($title)
-                    <h3 class="text-lg font-medium leading-6 text-gray-900">
+                    <h3 class="text-lg font-medium leading-6">
                         {{ $title }}
                     </h3>
                 @endif
                 
                 @if ($subtitle)
-                    <p class="mt-1 text-sm text-gray-500">
+                    <p class="mt-1 text-sm opacity-75">
                         {{ $subtitle }}
                     </p>
                 @endif

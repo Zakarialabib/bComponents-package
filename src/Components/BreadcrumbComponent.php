@@ -24,7 +24,7 @@ class BreadcrumbComponent extends BaseComponent
     /**
      * The component's view name.
      */
-    protected string $view = 'bcomponents::components.breadcrumb';
+    protected ?string $view = 'bcomponents::components.breadcrumb';
 
     /**
      * The component's default properties.

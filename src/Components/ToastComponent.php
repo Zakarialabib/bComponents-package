@@ -51,7 +51,7 @@ class ToastComponent extends BaseComponent
     /**
      * The component's view name.
      */
-    protected string $view = 'bcomponents::components.toast';
+    protected ?string $view = 'bcomponents::components.toast';
 
     /**
      * The color classes for different toast types.
