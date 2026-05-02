@@ -27,11 +27,11 @@
     
     @if($label)
         <div class="ml-3 text-sm">
-            <label for="{{ $name }}" class="font-medium text-gray-700 {{ $disabled ? 'opacity-50' : '' }}">
+            <label for="{{ $name }}" class="font-medium text-[color:var(--b-color-text)] {{ $disabled ? 'opacity-50' : '' }}">
                 {{ $label }}
             </label>
             @if($helper && $helperText)
-                <p class="text-gray-500">{{ $helperText }}</p>
+                <p class="opacity-75">{{ $helperText }}</p>
             @endif
         </div>
     @endif

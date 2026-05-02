@@ -3,8 +3,13 @@
 - [x] Component enable/disable is supported and behaves consistently (documented behavior).
 - [x] Package ships Tailwind v4 token CSS (base + semantic tokens) with at least one preset and dark-mode support.
 - [x] Style recipes exist for button/input/surface and are unit-testable (pure PHP).
-- [ ] v1 core components implement the standardized prop contract and attribute class merging rules.
-- [ ] Accessibility baselines are implemented for modal/dropdown/tabs/form controls/alerts (roles, keyboard behavior, focus expectations).
-- [ ] Documentation metadata exists for each v1 core component and is retrievable via a stable API.
-- [ ] Automated tests pass: Blade render tests + selected Livewire integration tests.
+- [x] v1 core components implement the standardized prop contract and attribute class merging rules.
+- [x] Accessibility baselines are implemented for modal/dropdown/tabs/form controls/alerts (roles, keyboard behavior, focus expectations).
+- [x] Documentation metadata exists for each v1 core component and is retrievable via a stable API.
+- [x] Automated tests pass: Blade render tests + selected Livewire integration tests.
 - [x] README examples and Tailwind content-path instructions match the shipped v1 contract.
+- [x] No runtime code reads removed config keys (`default_classes`, `css_framework`, etc.) after the config contract migration.
+- [x] Service provider uses one canonical view root and relies on standard Laravel override conventions (`resources/views/vendor/bcomponents`) without redundant loading paths.
+- [x] BaseComponent is reduced to shared package behavior and does not overwrite constructor-provided props; typed props and kebab/camel mapping are covered by tests.
+- [x] Legacy prop aliases are explicitly documented as deprecated and (optionally) emit deprecation warnings in non-production environments.
+- [x] CI workflow exists and runs tests on supported version matrix; changelog/deprecation policy is initialized.

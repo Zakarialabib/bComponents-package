@@ -1,0 +1,9 @@
+parameters:
+  level: 1
+  paths:
+    - src
+  excludePaths:
+    - src/Livewire
+    - src/Traits/WithLivewire.php
+    - src/Traits/WithValidation.php
+  reportUnmatchedIgnoredErrors: false

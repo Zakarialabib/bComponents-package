@@ -78,7 +78,7 @@ class GridComponent extends BaseComponent
     /**
      * Get the base classes for the component.
      */
-    protected function baseClasses(): array
+    public function baseClasses(): array
     {
         return [
             'grid',

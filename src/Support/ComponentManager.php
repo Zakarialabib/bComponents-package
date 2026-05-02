@@ -28,14 +28,8 @@ class ComponentManager
         return view()->exists("bcomponents::components.{$name}");
     }
     
-    /**
-     * Get component default classes from config
-     *
-     * @param string $name
-     * @return string|null
-     */
-    public static function getDefaultClasses($name)
+    public static function getDefaultClasses($name): ?string
     {
-        return config("bcomponents.default_classes.{$name}");
+        return null;
     }
 }

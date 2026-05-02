@@ -81,17 +81,6 @@ class BladeComponentManager
     }
 
     /**
-     * Get the default classes for a component
-     *
-     * @param string $component
-     * @return string|null
-     */
-    public function getDefaultClasses($component)
-    {
-        return Config::get("bcomponents.default_classes.{$component}");
-    }
-
-    /**
      * Check if a component is enabled
      *
      * @param string $component
@@ -109,7 +98,7 @@ class BladeComponentManager
      */
     public function getCssFramework()
     {
-        return Config::get('bcomponents.css_framework', 'tailwind');
+        return 'tailwind';
     }
 
     /**

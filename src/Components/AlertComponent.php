@@ -191,7 +191,8 @@ class AlertComponent extends BaseComponent
      */
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
+        parent::__construct();
+        $this->initializeProps($attributes);
     }
 
     /**

@@ -10,6 +10,11 @@ bComponents already ships useful Blade and Livewire UI building blocks, but its 
 - Add a metadata layer for documentation/portal readiness (component props/slots/compat notes).
 - Add a test baseline (render tests + selected Livewire integration tests) for supported Laravel/Livewire versions.
 - **BREAKING**: Replace current config surface (e.g. `default_classes`, `css_framework`) with a minimal, versionable config contract designed for Tailwind v4.
+- Stabilize the architecture by removing stale “previous generation” behavior (e.g. managers referencing removed config keys).
+- Simplify `BaseComponent` so it provides shared package behaviors, not a second prop/attribute framework parallel to Laravel.
+- Define an explicit deprecation layer for legacy prop aliases (migration bridge) and document canonical props for Tier 1.
+- Standardize a single canonical package view path and rely on Laravel’s standard view override conventions.
+- Add “package quality gates”: CI workflow, a minimal static-analysis baseline, and a versioned changelog process.
 
 ## Impact
 - Affected specs: component contract consistency, theming strategy, registration mechanism, docs metadata, test baseline.
@@ -91,6 +96,57 @@ The system SHALL include automated tests covering:
 - **WHEN** tests are executed
 - **THEN** each v1 core component renders without errors and includes expected attributes/classes.
 
+### Requirement: No Stale Config References
+The system SHALL not reference removed or deprecated config keys in runtime code paths.
+
+#### Scenario: Config contract is minimal
+- **WHEN** the consumer uses the new `config/bcomponents.php` schema
+- **THEN** no package class attempts to read `default_classes`, `css_framework`, or other removed keys.
+
+### Requirement: Canonical View Root
+The system SHALL ship one canonical package view root and rely on standard Laravel override conventions.
+- The canonical root SHALL be the only path registered with `loadViewsFrom` for the `bcomponents` namespace.
+- Consumer overrides SHALL work via `resources/views/vendor/bcomponents` without custom conditional logic.
+
+#### Scenario: Consumer overrides a single view
+- **WHEN** a consumer publishes and edits `resources/views/vendor/bcomponents/components/button.blade.php`
+- **THEN** `<x-b-button>` renders the overridden view without requiring changes to package internals.
+
+### Requirement: BaseComponent Scope
+`BaseComponent` SHALL provide shared package behavior only, and SHALL avoid re-implementing Laravel’s component prop system.
+
+The BaseComponent SHALL:
+- support consistent attribute class merge behavior used by package views
+- optionally provide shared helpers (e.g. `getComponentAttribute`, event init hook), as long as they do not alter Laravel’s native prop behavior
+
+The BaseComponent SHALL NOT:
+- invent a second “props hydration” system that competes with constructor props
+- guess views in ways that hide missing views (prefer explicit view names)
+
+#### Scenario: Typed constructor props behave predictably
+- **WHEN** a component uses typed constructor args
+- **THEN** values arrive exactly as passed by Blade, without being overwritten by default hydration.
+
+### Requirement: Deprecation Layer for Legacy Props
+The system SHALL treat legacy prop names as a temporary compatibility layer, not the canonical public API.
+- Canonical Tier 1 props SHALL be documented (e.g. `variant/size/tone/disabled/loading/fullWidth/iconOnly`).
+- Legacy aliases (e.g. `isDisabled/isLoading/isBlock/isIconOnly/color`) SHALL be documented as deprecated.
+- Deprecated aliases SHOULD emit `E_USER_DEPRECATED` warnings in non-production environments (config-gated).
+
+#### Scenario: Legacy prop alias is used
+- **WHEN** a consumer passes a legacy prop (e.g. `isDisabled`)
+- **THEN** the component behaves as the canonical prop would (e.g. sets `disabled`) and the alias is documented as deprecated.
+
+### Requirement: Package Quality Gates
+The system SHALL provide baseline maturity tooling for release readiness:
+- a CI workflow that runs tests on supported PHP/Laravel matrices
+- a minimal static analysis baseline (tool choice constrained to what the repo already uses or will add explicitly)
+- a versioned changelog with deprecation notes
+
+#### Scenario: CI verification
+- **WHEN** a PR is opened
+- **THEN** CI runs and reports pass/fail for tests and static analysis.
+
 ## MODIFIED Requirements
 
 ### Requirement: Configuration Contract (**BREAKING**)
@@ -106,9 +162,13 @@ Migration guidance:
 - Existing `default_classes` SHALL be replaced by recipe logic and/or theme tokens.
 - Existing `css_framework` SHALL be removed; Tailwind v4 is the supported baseline.
 
+### Requirement: View Loading Strategy
+The system SHALL standardize view loading and avoid ambiguous multiple-view roots.
+- Only one package view root SHALL be loaded for the `bcomponents` namespace.
+- Any legacy view roots MUST be removed or migrated.
+
 ## REMOVED Requirements
 
 ### Requirement: Multi-Framework Styling
 **Reason**: Tailwind v4-native tokens and recipes require a single consistent styling paradigm for predictable contracts.
 **Migration**: Consumers using other frameworks should treat bComponents as Tailwind-only; no compatibility layer will be maintained in v1.
-
