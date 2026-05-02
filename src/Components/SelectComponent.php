@@ -4,24 +4,53 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Components;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Zakarialabib\BComponents\Support\Styles\InputStyles;
 
 class SelectComponent extends BaseComponent
 {
+    public function __construct(
+        string $name = '',
+        ?string $id = null,
+        mixed $value = null,
+        array $options = [],
+        ?string $placeholder = null,
+        bool $required = false,
+        bool $disabled = false,
+        bool $invalid = false,
+        bool $readonly = false,
+        bool $autofocus = false,
+        bool $multiple = false,
+        string $size = 'md',
+    ) {
+        parent::__construct();
+
+        $this->name = $name;
+        $this->id = $id;
+        $this->value = $value;
+        $this->options = $options;
+        $this->placeholder = $placeholder;
+        $this->required = $required;
+        $this->disabled = $disabled;
+        $this->invalid = $invalid;
+        $this->readonly = $readonly;
+        $this->autofocus = $autofocus;
+        $this->multiple = $multiple;
+        $this->size = $size;
+    }
+
     /**
      * The select name.
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * The select id.
      *
      * @var string|null
      */
-    public ?string $id;
+    public ?string $id = null;
 
     /**
      * The select value.
@@ -35,7 +64,7 @@ class SelectComponent extends BaseComponent
      *
      * @var array
      */
-    public array $options;
+    public array $options = [];
 
     /**
      * The select placeholder.
@@ -49,42 +78,49 @@ class SelectComponent extends BaseComponent
      *
      * @var bool
      */
-    public bool $required;
+    public bool $required = false;
 
     /**
      * Whether the select is disabled.
      *
      * @var bool
      */
-    public bool $disabled;
+    public bool $disabled = false;
+
+    /**
+     * Whether the select is invalid.
+     *
+     * @var bool
+     */
+    public bool $invalid = false;
 
     /**
      * Whether the select is readonly.
      *
      * @var bool
      */
-    public bool $readonly;
+    public bool $readonly = false;
 
     /**
      * Whether the select has autofocus.
      *
      * @var bool
      */
-    public bool $autofocus;
+    public bool $autofocus = false;
 
     /**
      * Whether the select allows multiple selections.
      *
      * @var bool
      */
-    public bool $multiple;
+    public bool $multiple = false;
 
     /**
      * The select size.
      *
      * @var string
      */
-    public string $size;
+    public string $size = 'md';
 
     /**
      * The component's view name.
@@ -98,42 +134,34 @@ class SelectComponent extends BaseComponent
      *
      * @var array
      */
-    protected array $props = [
-        'name' => '',
-        'id' => null,
-        'value' => null,
-        'options' => [],
-        'placeholder' => null,
-        'required' => false,
-        'disabled' => false,
-        'readonly' => false,
-        'autofocus' => false,
-        'multiple' => false,
-        'size' => 'md',
-    ];
+    protected array $props = [];
 
     /**
      * The validation rules.
      *
      * @var array
      */
-    protected array $rules = [
-        'name' => 'required|string',
-        'options' => 'required|array',
-        'required' => 'boolean',
-        'disabled' => 'boolean',
-        'readonly' => 'boolean',
-        'autofocus' => 'boolean',
-        'multiple' => 'boolean',
-        'size' => 'string|in:xs,sm,md,lg,xl',
-    ];
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string',
+            'options' => 'required|array',
+            'required' => 'boolean',
+            'disabled' => 'boolean',
+            'invalid' => 'boolean',
+            'readonly' => 'boolean',
+            'autofocus' => 'boolean',
+            'multiple' => 'boolean',
+            'size' => 'string|in:xs,sm,md,lg,xl',
+        ];
+    }
 
     /**
      * The component's base classes.
      *
      * @var string
      */
-    protected string $baseClasses = 'block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500';
+    protected string $baseClasses = '';
 
     /**
      * The component's size classes.
@@ -163,10 +191,22 @@ class SelectComponent extends BaseComponent
             'placeholder' => $this->placeholder,
             'required' => $this->required,
             'disabled' => $this->disabled,
+            'invalid' => $this->invalid,
             'readonly' => $this->readonly,
             'autofocus' => $this->autofocus,
             'multiple' => $this->multiple,
         ]);
+    }
+
+    protected function getClasses(): string
+    {
+        $classes = InputStyles::classes([
+            'size' => $this->size,
+            'invalid' => $this->invalid,
+            'disabled' => $this->disabled,
+        ]);
+
+        return trim($classes . ' appearance-none');
     }
 
     /**

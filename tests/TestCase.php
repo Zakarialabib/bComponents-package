@@ -10,7 +10,14 @@ class TestCase extends Orchestra
 {
     protected function getPackageProviders($app): array
     {
-        return [\Zakarialabib\BComponents\BComponentsServiceProvider::class];
+        return [
+            \Livewire\LivewireServiceProvider::class,
+            \Zakarialabib\BComponents\BComponentsServiceProvider::class,
+        ];
+    }
+
+    protected function getEnvironmentSetUp($app): void
+    {
+        $app['config']->set('app.key', 'base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=');
     }
 }
-

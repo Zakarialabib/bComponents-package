@@ -40,7 +40,8 @@ class BreadcrumbComponent extends BaseComponent
      */
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
+        parent::__construct();
+        $this->initializeProps($attributes);
     }
 
     /**
@@ -68,7 +69,7 @@ class BreadcrumbComponent extends BaseComponent
     /**
      * Get the base classes for the component.
      */
-    protected function baseClasses(): array
+    public function baseClasses(): array
     {
         return [
             'flex',

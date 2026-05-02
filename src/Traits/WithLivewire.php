@@ -60,69 +60,7 @@ trait WithLivewire
         return $this;
     }
 
-    /**
-     * Dispatch a Livewire event.
-     *
-     * @param string $event
-     * @param mixed ...$params
-     * @return $this
-     */
-    public function dispatch(string $event, ...$params)
-    {
-        if (method_exists(parent::class, 'dispatch')) {
-            parent::dispatch($event, ...$params);
-        }
-        
-        return $this;
-    }
-
-    /**
-     * Dispatch a Livewire event to a specific component.
-     *
-     * @param string $event
-     * @param mixed ...$params
-     * @return $this
-     */
-    public function dispatchTo(string $event, ...$params)
-    {
-        if (method_exists(parent::class, 'dispatchTo')) {
-            parent::dispatchTo($event, ...$params);
-        }
-        
-        return $this;
-    }
-
-    /**
-     * Dispatch a Livewire event to this component only.
-     *
-     * @param string $event
-     * @param mixed ...$params
-     * @return $this
-     */
-    public function dispatchSelf(string $event, ...$params)
-    {
-        if (method_exists(parent::class, 'dispatchSelf')) {
-            parent::dispatchSelf($event, ...$params);
-        }
-        
-        return $this;
-    }
-
-    /**
-     * Dispatch a Livewire event to parent components.
-     *
-     * @param string $event
-     * @param mixed ...$params
-     * @return $this
-     */
-    public function dispatchUp(string $event, ...$params)
-    {
-        if (method_exists(parent::class, 'dispatchUp')) {
-            parent::dispatchUp($event, ...$params);
-        }
-        
-        return $this;
-    }
+    
 
     /**
      * For backward compatibility with Livewire v2.

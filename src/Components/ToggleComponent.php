@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Components;
 
-use Illuminate\View\Component;
-
 class ToggleComponent extends BaseComponent
 {
     /**
@@ -48,6 +46,8 @@ class ToggleComponent extends BaseComponent
      */
     public string $color = 'primary';
 
+    public string $tone = 'primary';
+
     /**
      * Whether to show helper text.
      */
@@ -62,6 +62,12 @@ class ToggleComponent extends BaseComponent
      * Whether to show icons in the toggle.
      */
     public bool $icons = false;
+
+    protected ?string $view = 'bcomponents::components.toggle';
+
+    protected array $props = [
+        'tone' => 'primary',
+    ];
 
     /**
      * Create a new component instance.
@@ -89,17 +95,10 @@ class ToggleComponent extends BaseComponent
         $this->required = $required;
         $this->size = $size;
         $this->color = $color;
+        $this->tone = $color;
         $this->helper = $helper;
         $this->helperText = $helperText;
         $this->icons = $icons;
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): \Illuminate\View\View
-    {
-        return view('bcomponents::components.toggle');
     }
 
     /**
@@ -116,6 +115,7 @@ class ToggleComponent extends BaseComponent
             'required' => ['boolean'],
             'size' => ['string', 'in:sm,md,lg'],
             'color' => ['string', 'in:primary,secondary,success,danger,warning,info'],
+            'tone' => ['string'],
             'helper' => ['boolean'],
             'helperText' => ['nullable', 'string'],
             'icons' => ['boolean'],
@@ -125,7 +125,7 @@ class ToggleComponent extends BaseComponent
     /**
      * Get the base classes for the component.
      */
-    protected function baseClasses(): array
+    public function baseClasses(): array
     {
         return [
             'relative',
@@ -141,8 +141,7 @@ class ToggleComponent extends BaseComponent
             'focus:outline-none',
             'focus:ring-2',
             'focus:ring-offset-2',
-            'focus:ring-' . $this->color . '-500',
-            $this->checked ? 'bg-' . $this->color . '-600' : 'bg-gray-200',
+            'focus:ring-[color:var(--b-color-primary)]',
             $this->disabled ? 'opacity-50 cursor-not-allowed' : '',
             $this->sizeClasses()['toggle'],
         ];
@@ -181,15 +180,24 @@ class ToggleComponent extends BaseComponent
             'pointer-events-none',
             'inline-block',
             'rounded-full',
-            'bg-white',
-            'shadow',
+            'bg-[color:var(--b-color-surface)]',
+            'shadow-[var(--b-shadow-sm)]',
             'transform',
             'ring-0',
             'transition',
             'ease-in-out',
             'duration-200',
-            $this->checked ? $this->sizeClasses()['translate'] : 'translate-x-0',
             $this->sizeClasses()['button'],
+        ]);
+    }
+
+    protected function viewData(): array
+    {
+        $size = $this->sizeClasses();
+
+        return array_merge(parent::viewData(), [
+            'buttonClasses' => $this->buttonClasses(),
+            'translateClass' => $size['translate'],
         ]);
     }
 } 

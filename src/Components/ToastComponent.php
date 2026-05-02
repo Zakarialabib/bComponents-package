@@ -89,7 +89,8 @@ class ToastComponent extends BaseComponent
         $this->title = $attributes['title'] ?? null;
         $this->icon = $attributes['icon'] ?? null;
 
-        parent::__construct($attributes);
+        parent::__construct();
+        $this->initializeProps($attributes);
     }
 
     /**
@@ -112,7 +113,7 @@ class ToastComponent extends BaseComponent
     /**
      * Get the base classes for the component.
      */
-    protected function baseClasses(): array
+    public function baseClasses(): array
     {
         return [
             'flex',
@@ -159,10 +160,9 @@ class ToastComponent extends BaseComponent
      */
     protected function viewData(): array
     {
-        return [
-            'attributes' => $this->attributes(),
+        return array_merge(parent::viewData(), [
             'classes' => $this->getClasses(),
             'iconClass' => $this->iconClasses[$this->type] ?? $this->iconClasses['info'],
-        ];
+        ]);
     }
 }

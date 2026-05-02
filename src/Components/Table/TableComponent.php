@@ -33,7 +33,7 @@ class TableComponent extends BaseComponent
      */
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
+        parent::__construct();
 
         $this->striped = $attributes['striped'] ?? false;
         $this->responsive = $attributes['responsive'] ?? true;
@@ -65,7 +65,7 @@ class TableComponent extends BaseComponent
     /**
      * Get the base classes for the component.
      */
-    protected function baseClasses(): array
+    public function baseClasses(): array
     {
         return array_filter([
             'min-w-full',

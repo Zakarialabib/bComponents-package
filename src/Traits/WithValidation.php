@@ -78,8 +78,9 @@ trait WithValidation
      * @param array $rules
      * @return array
      */
-    protected function getDataForValidation(array $rules): array
+    protected function getDataForValidation($rules)
     {
+        $rules = is_array($rules) ? $rules : [];
         $attributes = array_keys($rules);
 
         $data = [];
@@ -97,12 +98,12 @@ trait WithValidation
      *
      * @return $this
      */
-    public function resetValidation()
+    public function resetValidation($field = null)
     {
         $this->validationErrors = [];
         
         if (method_exists($this, 'resetErrorBag')) {
-            $this->resetErrorBag();
+            $this->resetErrorBag($field);
         }
         
         return $this;

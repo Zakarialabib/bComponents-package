@@ -57,7 +57,7 @@ class TableHeaderCellComponent extends BaseComponent
     /**
      * Get the base classes for the component.
      */
-    protected function baseClasses(): array
+    public function baseClasses(): array
     {
         return array_filter([
             'px-6',

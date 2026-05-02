@@ -145,11 +145,18 @@ abstract class BaseComponent extends Component
      */
     public function render()
     {
-        $viewName = $this->getViewName();
+        if ($this->view !== null) {
+            if (!View::exists($this->view)) {
+                throw new \RuntimeException("Component view {$this->view} does not exist.");
+            }
+
+            return view($this->view, $this->viewData());
+        }
+
+        $viewName = $this->guessViewName();
 
         if (!View::exists($viewName)) {
-            // Fallback to guessed view if the specified one doesn't exist
-            $viewName = $this->guessViewName();
+            throw new \RuntimeException("Component view {$viewName} does not exist.");
         }
 
         return view($viewName, $this->viewData());

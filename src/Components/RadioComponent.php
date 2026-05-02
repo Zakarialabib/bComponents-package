@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Components;
 
-use Illuminate\View\Component;
-
 class RadioComponent extends BaseComponent
 {
     /**
@@ -48,6 +46,14 @@ class RadioComponent extends BaseComponent
      */
     public string $color = 'primary';
 
+    public string $tone = 'primary';
+
+    protected ?string $view = 'bcomponents::components.radio';
+
+    protected array $props = [
+        'tone' => 'primary',
+    ];
+
     /**
      * Whether to show helper text.
      */
@@ -83,16 +89,9 @@ class RadioComponent extends BaseComponent
         $this->required = $required;
         $this->size = $size;
         $this->color = $color;
+        $this->tone = $color;
         $this->helper = $helper;
         $this->helperText = $helperText;
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): \Illuminate\View\View
-    {
-        return view('bcomponents::components.radio');
     }
 
     /**
@@ -109,6 +108,7 @@ class RadioComponent extends BaseComponent
             'required' => ['boolean'],
             'size' => ['string', 'in:sm,md,lg'],
             'color' => ['string', 'in:primary,secondary,success,danger,warning,info'],
+            'tone' => ['string'],
             'helper' => ['boolean'],
             'helperText' => ['nullable', 'string'],
         ];
@@ -117,17 +117,19 @@ class RadioComponent extends BaseComponent
     /**
      * Get the base classes for the component.
      */
-    protected function baseClasses(): array
+    public function baseClasses(): array
     {
         return [
-            'form-radio',
-            'border-gray-300',
-            'text-' . $this->color . '-600',
-            'shadow-sm',
-            'focus:border-' . $this->color . '-300',
-            'focus:ring',
-            'focus:ring-' . $this->color . '-200',
-            'focus:ring-opacity-50',
+            'rounded-full',
+            'border',
+            'border-[color:var(--b-color-border)]',
+            'bg-[color:var(--b-color-surface)]',
+            'text-[color:var(--b-color-primary)]',
+            'shadow-[var(--b-shadow-sm)]',
+            'focus:outline-none',
+            'focus:ring-2',
+            'focus:ring-offset-2',
+            'focus:ring-[color:var(--b-color-primary)]',
             $this->disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
             $this->sizeClasses(),
         ];

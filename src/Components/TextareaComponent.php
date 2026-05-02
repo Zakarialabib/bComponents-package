@@ -4,24 +4,55 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Components;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Zakarialabib\BComponents\Support\Styles\InputStyles;
 
 class TextareaComponent extends BaseComponent
 {
+    public function __construct(
+        string $name = '',
+        ?string $id = null,
+        mixed $value = null,
+        ?string $placeholder = null,
+        bool $required = false,
+        bool $disabled = false,
+        bool $invalid = false,
+        bool $readonly = false,
+        bool $autofocus = false,
+        string $size = 'md',
+        int $rows = 3,
+        ?int $cols = null,
+        ?string $resize = null,
+    ) {
+        parent::__construct();
+
+        $this->name = $name;
+        $this->id = $id;
+        $this->value = $value;
+        $this->placeholder = $placeholder;
+        $this->required = $required;
+        $this->disabled = $disabled;
+        $this->invalid = $invalid;
+        $this->readonly = $readonly;
+        $this->autofocus = $autofocus;
+        $this->size = $size;
+        $this->rows = $rows;
+        $this->cols = $cols;
+        $this->resize = $resize;
+    }
+
     /**
      * The textarea name.
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * The textarea id.
      *
      * @var string|null
      */
-    public ?string $id;
+    public ?string $id = null;
 
     /**
      * The textarea value.
@@ -42,49 +73,63 @@ class TextareaComponent extends BaseComponent
      *
      * @var bool
      */
-    public bool $required;
+    public bool $required = false;
 
     /**
      * Whether the textarea is disabled.
      *
      * @var bool
      */
-    public bool $disabled;
+    public bool $disabled = false;
+
+    /**
+     * Whether the textarea is invalid.
+     *
+     * @var bool
+     */
+    public bool $invalid = false;
 
     /**
      * Whether the textarea is readonly.
      *
      * @var bool
      */
-    public bool $readonly;
+    public bool $readonly = false;
 
     /**
      * Whether the textarea has autofocus.
      *
      * @var bool
      */
-    public bool $autofocus;
+    public bool $autofocus = false;
+
+    /**
+     * The textarea size.
+     *
+     * @var string
+     */
+    public string $size = 'md';
 
     /**
      * The textarea rows.
      *
      * @var int
      */
-    public int $rows;
+    public int $rows = 3;
 
     /**
      * The textarea cols.
      *
      * @var int|null
      */
-    public ?int $cols;
+    public ?int $cols = null;
 
     /**
      * Whether the textarea should resize.
      *
      * @var string|null
      */
-    public ?string $resize;
+    public ?string $resize = null;
 
     /**
      * The component's view name.
@@ -98,42 +143,35 @@ class TextareaComponent extends BaseComponent
      *
      * @var array
      */
-    protected array $props = [
-        'name' => '',
-        'id' => null,
-        'value' => null,
-        'placeholder' => null,
-        'required' => false,
-        'disabled' => false,
-        'readonly' => false,
-        'autofocus' => false,
-        'rows' => 3,
-        'cols' => null,
-        'resize' => null,
-    ];
+    protected array $props = [];
 
     /**
      * The validation rules.
      *
      * @var array
      */
-    protected array $rules = [
-        'name' => 'required|string',
-        'required' => 'boolean',
-        'disabled' => 'boolean',
-        'readonly' => 'boolean',
-        'autofocus' => 'boolean',
-        'rows' => 'integer|min:1',
-        'cols' => 'nullable|integer|min:1',
-        'resize' => 'nullable|string|in:none,y,x,both',
-    ];
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string',
+            'required' => 'boolean',
+            'disabled' => 'boolean',
+            'invalid' => 'boolean',
+            'readonly' => 'boolean',
+            'autofocus' => 'boolean',
+            'size' => 'string|in:sm,md,lg',
+            'rows' => 'integer|min:1',
+            'cols' => 'nullable|integer|min:1',
+            'resize' => 'nullable|string|in:none,y,x,both',
+        ];
+    }
 
     /**
      * The component's base classes.
      *
      * @var string
      */
-    protected string $baseClasses = 'block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500';
+    protected string $baseClasses = '';
 
     /**
      * Get the view data.
@@ -149,12 +187,24 @@ class TextareaComponent extends BaseComponent
             'placeholder' => $this->placeholder,
             'required' => $this->required,
             'disabled' => $this->disabled,
+            'invalid' => $this->invalid,
             'readonly' => $this->readonly,
             'autofocus' => $this->autofocus,
             'rows' => $this->rows,
             'cols' => $this->cols,
-            'resize' => $this->getResizeClass(),
+            'resize' => $this->resize,
         ]);
+    }
+
+    protected function getClasses(): string
+    {
+        $classes = InputStyles::classes([
+            'size' => $this->size,
+            'invalid' => $this->invalid,
+            'disabled' => $this->disabled,
+        ]);
+
+        return trim($classes . ' ' . $this->getResizeClass());
     }
 
     /**

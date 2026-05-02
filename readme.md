@@ -102,6 +102,18 @@ Props:
 - `wire:click`: The Livewire action to call when the button is clicked.
 - `x-on:click`: The Alpine.js action to call when the button is clicked.
 
+Legacy props (deprecated):
+- `color` (alias of `tone`)
+- `isDisabled` (alias of `disabled`)
+- `isLoading` (alias of `loading`)
+- `isBlock` (alias of `fullWidth`)
+- `isIconOnly` (alias of `iconOnly`)
+
+For now these aliases still work as a migration bridge, but they are not considered the stable public API and will be removed in a future major release.
+
+Form controls:
+- `Checkbox`, `Radio`, and `Toggle` historically used `color`; use `tone` going forward (the old `color` prop is deprecated).
+
 #### Card Component
 
 ```blade

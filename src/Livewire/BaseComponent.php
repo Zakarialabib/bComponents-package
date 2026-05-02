@@ -54,7 +54,7 @@ abstract class BaseComponent extends Component
      *
      * @return void
      */
-    public function mount(): void
+    public function boot(): void
     {
         $this->initializeProps();
         $this->initializeEvents();

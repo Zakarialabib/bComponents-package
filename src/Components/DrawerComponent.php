@@ -55,7 +55,7 @@ class DrawerComponent extends BaseComponent
         $this->static = $attributes['static'] ?? false;
         $this->title = $attributes['title'] ?? null;
         
-        parent::__construct($attributes);
+        parent::__construct();
     }
     
     /**
@@ -107,12 +107,11 @@ class DrawerComponent extends BaseComponent
             'bottom' => 'translate-y-0',
         ];
         
-        return [
-            'attributes' => $this->attributes(),
+        return array_merge(parent::viewData(), [
             'widthClass' => $widthClasses[$this->width] ?? $widthClasses['md'],
             'positionClass' => $positionClasses[$this->position] ?? $positionClasses['right'],
             'transitionClass' => $transitionClasses[$this->position] ?? $transitionClasses['right'],
             'isVertical' => in_array($this->position, ['left', 'right']),
-        ];
+        ]);
     }
 }

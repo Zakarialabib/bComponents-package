@@ -6,9 +6,11 @@
     'placeholder' => null,
     'required' => false,
     'disabled' => false,
+    'invalid' => false,
     'readonly' => false,
     'autofocus' => false,
     'multiple' => false,
+    'size' => 'md',
 ])
 
 @php

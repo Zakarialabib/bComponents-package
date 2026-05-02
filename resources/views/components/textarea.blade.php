@@ -5,11 +5,13 @@
     'placeholder' => null,
     'required' => false,
     'disabled' => false,
+    'invalid' => false,
     'readonly' => false,
     'autofocus' => false,
+    'size' => 'md',
     'rows' => 3,
     'cols' => null,
-    'resize' => '',
+    'resize' => null,
 ])
 
 @php
@@ -18,7 +20,7 @@
         'id' => $id ?? $name,
         'placeholder' => $placeholder,
         'rows' => $rows,
-        'class' => $classes . ' ' . $resize,
+        'class' => $classes,
     ];
 
     if ($cols) $textareaAttributes['cols'] = $cols;
