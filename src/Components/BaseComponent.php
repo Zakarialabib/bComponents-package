@@ -41,33 +41,36 @@ abstract class BaseComponent extends Component
      */
     protected array $props = [];
 
-    /*
-    * @var \Illuminate\View\ComponentAttributeBag
-    */
-    public $attributes;
+    protected array $rawAttributes = [];
 
-    /**
-     * Create a new component instance.
-     *
-     * @param array $attributes Component attributes
-     */
-    public function __construct($attributes = [])
+    protected bool $initialized = false;
+
+    public function __construct()
     {
-        // Ensure attributes is an array
-        $this->attributes = is_array($attributes) ? $attributes : [];
+        $this->initializeProps([]);
+    }
 
-        // Initialize component properties from the props array and attributes
+    public function withAttributes(array $attributes)
+    {
+        parent::withAttributes($attributes);
+
+        $this->rawAttributes = $attributes;
+
         $this->initializeProps($attributes);
 
-        // Initialize events from traits
-        if (method_exists($this, 'initializeEvents')) {
-            $this->initializeEvents();
+        if (!$this->initialized) {
+            if (method_exists($this, 'initializeEvents')) {
+                $this->initializeEvents();
+            }
+
+            if (method_exists($this, 'rules') && $this->rules()) {
+                $this->validateProps();
+            }
+
+            $this->initialized = true;
         }
 
-        // Validate props if validation rules exist
-        if (method_exists($this, 'rules') && $this->rules()) {
-            $this->validateProps();
-        }
+        return $this;
     }
 
     /**
@@ -176,7 +179,6 @@ abstract class BaseComponent extends Component
             [
                 'componentName' => $className,
                 'componentClass' => static::class,
-                'attributes' => $this->attributes,
                 'classes' => $this->getClasses(),
             ]
         );
@@ -190,7 +192,7 @@ abstract class BaseComponent extends Component
      */
     public function hasComponentAttribute(string $key): bool
     {
-        return Arr::has($this->attributes, $key);
+        return Arr::has($this->rawAttributes, $key);
     }
 
     /**
@@ -202,7 +204,7 @@ abstract class BaseComponent extends Component
      */
     public function getComponentAttribute(string $key, $default = null)
     {
-        return Arr::get($this->attributes, $key, $default);
+        return Arr::get($this->rawAttributes, $key, $default);
     }
 
     /**

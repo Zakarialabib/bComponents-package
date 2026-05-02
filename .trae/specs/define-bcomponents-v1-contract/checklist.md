@@ -1,11 +1,10 @@
-- [ ] Config schema matches the v1 contract (prefix/theme/components/assets/livewire/docs) and includes migration notes for removed keys.
-- [ ] Service provider registers Blade components via a centralized registry and respects the configured prefix.
-- [ ] Component enable/disable is supported and behaves consistently (documented behavior).
-- [ ] Package ships Tailwind v4 token CSS (base + semantic tokens) with at least one preset and dark-mode support.
-- [ ] Style recipes exist for button/input/surface and are unit-testable (pure PHP).
+- [x] Config schema matches the v1 contract (prefix/theme/components/assets/livewire/docs) and includes migration notes for removed keys.
+- [x] Service provider registers Blade components via a centralized registry and respects the configured prefix.
+- [x] Component enable/disable is supported and behaves consistently (documented behavior).
+- [x] Package ships Tailwind v4 token CSS (base + semantic tokens) with at least one preset and dark-mode support.
+- [x] Style recipes exist for button/input/surface and are unit-testable (pure PHP).
 - [ ] v1 core components implement the standardized prop contract and attribute class merging rules.
 - [ ] Accessibility baselines are implemented for modal/dropdown/tabs/form controls/alerts (roles, keyboard behavior, focus expectations).
 - [ ] Documentation metadata exists for each v1 core component and is retrievable via a stable API.
 - [ ] Automated tests pass: Blade render tests + selected Livewire integration tests.
-- [ ] README examples and Tailwind content-path instructions match the shipped v1 contract.
-
+- [x] README examples and Tailwind content-path instructions match the shipped v1 contract.
