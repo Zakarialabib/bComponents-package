@@ -8,54 +8,92 @@ use Zakarialabib\BComponents\Support\Styles\InputStyles;
 
 class InputComponent extends BaseComponent
 {
+    public function __construct(
+        string $name = '',
+        string $type = 'text',
+        ?string $id = null,
+        mixed $value = null,
+        ?string $placeholder = null,
+        bool $required = false,
+        bool $disabled = false,
+        bool $invalid = false,
+        bool $readonly = false,
+        bool $autofocus = false,
+        string $size = 'md',
+        ?string $prefix = null,
+        ?string $suffix = null,
+        ?string $prefixIcon = null,
+        ?string $suffixIcon = null,
+    ) {
+        parent::__construct();
+
+        $this->name = $name;
+        $this->type = $type;
+        $this->id = $id;
+        $this->value = $value;
+        $this->placeholder = $placeholder;
+        $this->required = $required;
+        $this->disabled = $disabled;
+        $this->invalid = $invalid;
+        $this->readonly = $readonly;
+        $this->autofocus = $autofocus;
+        $this->size = $size;
+        $this->prefix = $prefix;
+        $this->suffix = $suffix;
+        $this->prefixIcon = $prefixIcon;
+        $this->suffixIcon = $suffixIcon;
+    }
+
     /**
      * The input type.
      *
      * @var string
      */
-    public string $type;
+    public string $type = 'text';
 
     /**
      * The input name.
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * The input id.
      *
      * @var string|null
      */
-    public ?string $id;
+    public ?string $id = null;
 
     /**
      * The input value.
      *
      * @var mixed
      */
-    public $value;
+    public $value = null;
 
     /**
      * The input placeholder.
      *
      * @var string|null
      */
-    public ?string $placeholder;
+    public ?string $placeholder = null;
 
     /**
      * Whether the input is required.
      *
      * @var bool
      */
-    public bool $required;
+    public bool $required = false;
 
     /**
      * Whether the input is disabled.
      *
      * @var bool
      */
-    public bool $disabled;
+    public bool $disabled = false;
+
+    public bool $invalid = false;
 
     public bool $invalid;
 
@@ -64,49 +102,49 @@ class InputComponent extends BaseComponent
      *
      * @var bool
      */
-    public bool $readonly;
+    public bool $readonly = false;
 
     /**
      * Whether the input has autofocus.
      *
      * @var bool
      */
-    public bool $autofocus;
+    public bool $autofocus = false;
 
     /**
      * The input size.
      *
      * @var string
      */
-    public string $size;
+    public string $size = 'md';
 
     /**
      * The input prefix.
      *
      * @var string|null
      */
-    public ?string $prefix;
+    public ?string $prefix = null;
 
     /**
      * The input suffix.
      *
      * @var string|null
      */
-    public ?string $suffix;
+    public ?string $suffix = null;
 
     /**
      * The input prefix icon.
      *
      * @var string|null
      */
-    public ?string $prefixIcon;
+    public ?string $prefixIcon = null;
 
     /**
      * The input suffix icon.
      *
      * @var string|null
      */
-    public ?string $suffixIcon;
+    public ?string $suffixIcon = null;
 
     /**
      * The component's view name.
@@ -148,16 +186,12 @@ class InputComponent extends BaseComponent
         'name' => 'required|string',
         'required' => 'boolean',
         'disabled' => 'boolean',
+        'invalid' => 'boolean',
         'readonly' => 'boolean',
         'autofocus' => 'boolean',
         'size' => 'string|in:xs,sm,md,lg,xl',
     ];
 
-    /**
-     * The component's base classes.
-     *
-     * @var string
-     */
     /**
      * Get the view data.
      *

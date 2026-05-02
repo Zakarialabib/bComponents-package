@@ -20,14 +20,13 @@ class BComponentsServiceProvider extends ServiceProvider
     {
         $this->registerPublishables();
         $this->registerBladeComponents();
-        
-        // Load views from both package and published locations
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bcomponents');
-        
-        // Load published views
+
         if (is_dir(resource_path('views/vendor/bcomponents'))) {
             $this->loadViewsFrom(resource_path('views/vendor/bcomponents'), 'bcomponents');
         }
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bcomponents');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'bcomponents');
 
         if ($this->app->runningInConsole()) {
             $this->commands([

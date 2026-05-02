@@ -43,20 +43,23 @@ abstract class BaseComponent extends Component
 
     protected array $rawAttributes = [];
 
-    protected bool $initialized = false;
-
-    public function __construct()
+    /**
+     * Create a new component instance.
+     *
+     * @param array $attributes Component attributes
+     */
+    public function __construct(...$attributes)
     {
-        $this->initializeProps([]);
-    }
+        $data = $attributes;
 
-    public function withAttributes(array $attributes)
-    {
-        parent::withAttributes($attributes);
+        if (count($attributes) === 1 && is_array($attributes[0])) {
+            $data = $attributes[0];
+        }
 
-        $this->rawAttributes = $attributes;
+        $this->attributes = [];
 
-        $this->initializeProps($attributes);
+        // Initialize component properties from the props array and attributes
+        $this->initializeProps(is_array($data) ? $data : []);
 
         if (!$this->initialized) {
             if (method_exists($this, 'initializeEvents')) {
@@ -170,6 +173,7 @@ abstract class BaseComponent extends Component
     {
         // Get all public properties of the component
         $properties = get_object_vars($this);
+        unset($properties['attributes']);
 
         // Also add the component's class name
         $className = class_basename($this);
@@ -192,7 +196,11 @@ abstract class BaseComponent extends Component
      */
     public function hasComponentAttribute(string $key): bool
     {
-        return Arr::has($this->rawAttributes, $key);
+        $attributes = $this->attributes instanceof ComponentAttributeBag
+            ? $this->attributes->getAttributes()
+            : (is_array($this->attributes) ? $this->attributes : []);
+
+        return Arr::has($attributes, $key);
     }
 
     /**
@@ -204,7 +212,11 @@ abstract class BaseComponent extends Component
      */
     public function getComponentAttribute(string $key, $default = null)
     {
-        return Arr::get($this->rawAttributes, $key, $default);
+        $attributes = $this->attributes instanceof ComponentAttributeBag
+            ? $this->attributes->getAttributes()
+            : (is_array($this->attributes) ? $this->attributes : []);
+
+        return Arr::get($attributes, $key, $default);
     }
 
     /**
