@@ -147,7 +147,7 @@ Each component should carry one of these labels in docs/metadata:
 - Assets: minimal JS baseline; optional enhancements behind opt-in usage
 - Build: document Tailwind scan paths to avoid bloat and missed classes
 
-## Testing Model (CLI-only baseline; no browser)
+## Testing Model (CLI-only baseline; no web UI automation)
 
 ### Contract tests
 - prop normalization
@@ -162,6 +162,13 @@ Each component should carry one of these labels in docs/metadata:
 - wire:model/wire:click pass-through
 - loading state behaviors
 - rerender safety (no brittle DOM assumptions)
+
+### Baseline verification commands
+
+```bash
+vendor/bin/phpunit
+vendor/bin/phpstan analyse
+```
 
 ## Architecture-to-Code Mapping (current repo snapshot)
 
@@ -191,4 +198,3 @@ Each component should carry one of these labels in docs/metadata:
 - Ensure Tailwind scan path docs match the actual shipped view paths
 - Add metadata layer for component docs and compatibility labels
 - Expand CLI test coverage to core components (not only smoke tests)
-
