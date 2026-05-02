@@ -75,12 +75,6 @@ class ButtonComponent extends BaseComponent
     public ?string $wireClick = null;
     public ?string $alpineClick = null;
 
-    public ?string $color = null;
-    public bool $isDisabled = false;
-    public bool $isLoading = false;
-    public bool $isBlock = false;
-    public bool $isIconOnly = false;
-
     /**
      * The component's view name
      */

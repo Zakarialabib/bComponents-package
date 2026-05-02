@@ -43,23 +43,22 @@ abstract class BaseComponent extends Component
 
     protected array $rawAttributes = [];
 
+    protected bool $initialized = false;
+
     /**
      * Create a new component instance.
-     *
-     * @param array $attributes Component attributes
      */
-    public function __construct(...$attributes)
+    public function __construct()
     {
-        $data = $attributes;
+        $this->initializeProps([]);
+    }
 
-        if (count($attributes) === 1 && is_array($attributes[0])) {
-            $data = $attributes[0];
-        }
+    public function withAttributes(array $attributes)
+    {
+        parent::withAttributes($attributes);
 
-        $this->attributes = [];
-
-        // Initialize component properties from the props array and attributes
-        $this->initializeProps(is_array($data) ? $data : []);
+        $this->rawAttributes = $attributes;
+        $this->initializeProps($attributes);
 
         if (!$this->initialized) {
             if (method_exists($this, 'initializeEvents')) {
