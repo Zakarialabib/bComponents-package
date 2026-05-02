@@ -6,6 +6,7 @@ namespace Zakarialabib\BComponents;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Livewire\Livewire;
 use Zakarialabib\BComponents\Support\ComponentRegistry;
 use Zakarialabib\BComponents\Support\Metadata\ComponentMetadataRepository;
 
@@ -21,6 +22,7 @@ class BComponentsServiceProvider extends ServiceProvider
         $this->registerPublishables();
         $this->registerBladeComponents();
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bcomponents');
+        $this->registerLivewireComponents();
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -90,6 +92,35 @@ class BComponentsServiceProvider extends ServiceProvider
             }
 
             Blade::component($class, "{$prefix}-{$alias}");
+        }
+    }
+
+    private function registerLivewireComponents(): void
+    {
+        if (!(bool) config('bcomponents.livewire.enabled', true)) {
+            return;
+        }
+
+        if (!class_exists(Livewire::class)) {
+            return;
+        }
+
+        $prefix = (string) config('bcomponents.prefix', 'b');
+
+        $aliases = [
+            'autocomplete' => \Zakarialabib\BComponents\Livewire\AutocompleteComponent::class,
+            'date-picker' => \Zakarialabib\BComponents\Livewire\DatePickerComponent::class,
+            'dropdown' => \Zakarialabib\BComponents\Livewire\DropdownComponent::class,
+            'file-upload' => \Zakarialabib\BComponents\Livewire\FileUploadComponent::class,
+            'modal' => \Zakarialabib\BComponents\Livewire\ModalComponent::class,
+            'multi-select' => \Zakarialabib\BComponents\Livewire\MultiSelectComponent::class,
+            'rich-text-editor' => \Zakarialabib\BComponents\Livewire\RichTextEditorComponent::class,
+            'table' => \Zakarialabib\BComponents\Livewire\TableComponent::class,
+            'tabs' => \Zakarialabib\BComponents\Livewire\TabsComponent::class,
+        ];
+
+        foreach ($aliases as $alias => $class) {
+            Livewire::component("{$prefix}-{$alias}", $class);
         }
     }
 }

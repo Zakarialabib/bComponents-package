@@ -4,13 +4,13 @@ A modern Laravel Blade component library with Livewire v3 and Alpine.js integrat
 
 ## Features
 
-- 🚀 Built for Laravel 11+ and Livewire 3.0+
+- 🚀 Built for Laravel 11+ and Livewire 3/4
 - 🎨 Styled with TailwindCSS
 - ⚡ Alpine.js for lightweight interactivity
 - ♿ Accessible components with ARIA support
 - 📱 Fully responsive
 - 🔧 Highly customizable
-- ⚡ Performance optimized for Livewire v3
+- ⚡ Blade-first, Livewire-friendly
 
 ## Architecture
 
@@ -23,6 +23,22 @@ See [docs/architecture/bcomponents-conceptual-architecture.md](docs/architecture
 - Livewire 3.0+ or 4.0+
 - TailwindCSS 4.0+
 - Alpine.js 3.0+
+
+## Status & Stability
+
+This package is currently in a foundation/stabilization stage: the architecture is converging on a single v1 contract (tokens + recipes + registry), but not every component has been fully migrated to the same styling or API conventions.
+
+Stable (v1-style, actively tested):
+- Blade components: `button`, `input`, `textarea`, `select`, `checkbox`, `radio`, `toggle`, `badge`, `alert`, `card`, `modal`, `dropdown`, `tabs`, `table` (and table subcomponents), `select-dropdown`
+- Recipes: button/input/surface
+- Theme tokens: CSS variables + Tailwind v4 arbitrary values
+- Automated tests: Blade render smoke tests + Livewire render smoke tests
+
+Legacy/less normalized (works, but not yet v1-tokenized everywhere):
+- `header` / `footer` (documented separately, uses Tailwind color class inputs like `bgColor`, `textColor`)
+
+Experimental:
+- Livewire components are shipped and registered, but some require extra frontend libraries (see Livewire section).
 
 ## Installation
 
@@ -53,7 +69,6 @@ module.exports = {
     content: [
         // ...
         './vendor/zakarialabib/bcomponents/resources/views/**/*.blade.php',
-        './vendor/zakarialabib/bcomponents/src/resources/views/**/*.blade.php',
     ],
     // ...
 }
@@ -162,74 +177,83 @@ Props:
 #### Dropdown Component
 
 ```blade
-<x-b-dropdown label="Dropdown">
-    <x-b-dropdown-item href="#">Item 1</x-b-dropdown-item>
-    <x-b-dropdown-item href="#">Item 2</x-b-dropdown-item>
-    <x-b-dropdown-item href="#">Item 3</x-b-dropdown-item>
+<x-b-dropdown align="left" width="md">
+    <x-slot:trigger>
+        <x-b-button type="button" tone="secondary">Dropdown</x-b-button>
+    </x-slot:trigger>
+
+    <x-slot:content>
+        <a href="#" class="block px-4 py-2 text-sm">Item 1</a>
+        <a href="#" class="block px-4 py-2 text-sm">Item 2</a>
+        <a href="#" class="block px-4 py-2 text-sm">Item 3</a>
+    </x-slot:content>
 </x-b-dropdown>
 ```
 
 Props:
-- `label`: The label for the dropdown.
-- `icon`: The icon to display in the dropdown.
-- `position`: The position of the dropdown menu (`left`, `right`).
-- `width`: The width of the dropdown menu.
+- `align`: Menu alignment (`left`, `right`).
+- `width`: Menu width (`sm`, `md`, `lg`).
+
+Slots:
+- `trigger`: The clickable trigger.
+- `content`: The menu content.
 
 #### Modal Component
 
 ```blade
-<x-b-modal id="my-modal" title="Modal Title">
+<x-b-modal name="my-modal" title="Modal Title">
     <p>This is the modal content.</p>
     
-    <x-slot name="footer">
-        <x-b-button tone="secondary" data-dismiss="modal">Close</x-b-button>
+    <x-slot:footer>
+        <x-b-button
+            tone="secondary"
+            type="button"
+            x-on:click="$dispatch('close-modal', 'my-modal')"
+        >
+            Close
+        </x-b-button>
         <x-b-button tone="primary">Save changes</x-b-button>
     </x-slot>
 </x-b-modal>
 
-<x-b-button data-toggle="modal" data-target="#my-modal">
+<x-b-button type="button" x-on:click="$dispatch('open-modal', 'my-modal')">
     Open Modal
 </x-b-button>
 ```
 
 Props:
-- `id`: The ID of the modal.
+- `name`: The modal name (used by the open/close browser events).
 - `title`: The title of the modal.
-- `size`: The size of the modal (`sm`, `md`, `lg`, `xl`, `full`).
+- `maxWidth`: The max width (`sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `6xl`, `7xl`, `full`).
+- `show`: Whether the modal starts open.
 - `centered`: Whether the modal should be vertically centered.
 - `scrollable`: Whether the modal should be scrollable.
 - `static`: Whether the modal should not close when clicking outside.
 
-### Livewire Components
+### Livewire Components (Experimental)
 
-BComponents also provides Livewire components that you can use in your Laravel application. These components are optimized for Livewire v3 and provide enhanced interactivity.
+The package ships a set of Livewire components and registers them automatically when `bcomponents.livewire.enabled=true`. Their tag names use the same prefix as Blade components.
 
-#### Table Component
+Default prefix `b` yields tags:
+- `<livewire:b-table />`
+- `<livewire:b-modal />`
+- `<livewire:b-dropdown />`
+- `<livewire:b-tabs />`
+- `<livewire:b-date-picker />`
+- `<livewire:b-autocomplete />`
+- `<livewire:b-multi-select />`
+- `<livewire:b-file-upload />`
+- `<livewire:b-rich-text-editor />`
 
-```php
-// In your Livewire component
-use App\Models\User;
-
-class UserTable extends \Livewire\Component
-{
-    public function render()
-    {
-        return view('livewire.user-table', [
-            'users' => User::paginate(10),
-        ]);
-    }
-}
-```
+#### Livewire Table
 
 ```blade
-<!-- In your Blade view -->
-<livewire:livewire-table
+<livewire:b-table
     :items="$users"
     :columns="[
         ['field' => 'id', 'label' => 'ID'],
         ['field' => 'name', 'label' => 'Name'],
         ['field' => 'email', 'label' => 'Email'],
-        ['field' => 'created_at', 'label' => 'Created At'],
     ]"
     :paginate="true"
     :per-page="10"
@@ -237,111 +261,42 @@ class UserTable extends \Livewire\Component
 />
 ```
 
-Props:
-- `items`: The collection of items to display in the table.
-- `columns`: The columns to display in the table.
-- `paginate`: Whether to show pagination.
-- `perPage`: The number of items to show per page.
-- `searchable`: Whether to show the search input.
-
-#### Modal Component
+#### Livewire Modal
 
 ```blade
-<!-- In your Blade view -->
-<livewire:livewire-modal
-    title="Modal Title"
-    size="md"
-    :centered="true"
-    :scrollable="false"
-    :static="false"
-/>
-
-<!-- Trigger the modal -->
-<x-b-button wire:click="$emit('openModal', { title: 'Dynamic Title' })">
-    Open Modal
-</x-b-button>
+<livewire:b-modal title="Modal Title" size="md" :static="false" />
 ```
-
-Props:
-- `title`: The title of the modal.
-- `size`: The size of the modal (`sm`, `md`, `lg`, `xl`, `full`).
-- `centered`: Whether the modal should be vertically centered.
-- `scrollable`: Whether the modal should be scrollable.
-- `static`: Whether the modal should not close when clicking outside.
-- `content`: The content of the modal (HTML).
 
 Events:
-- `openModal`: Open the modal with optional parameters.
-- `closeModal`: Close the modal.
+- `openModal` / `closeModal`
 
-#### Dropdown Component
-
-```blade
-<!-- In your Blade view -->
-<livewire:livewire-dropdown
-    label="Dropdown"
-    icon="heroicon-o-chevron-down"
-    position="left"
-    width="w-48"
->
-    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Item 1</a>
-    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Item 2</a>
-    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Item 3</a>
-</livewire:livewire-dropdown>
-```
-
-Props:
-- `label`: The label for the dropdown.
-- `icon`: The icon to display in the dropdown.
-- `position`: The position of the dropdown menu (`left`, `right`).
-- `width`: The width of the dropdown menu.
-
-#### Tabs Component
+#### Livewire Date Picker
 
 ```blade
-<!-- In your Blade view -->
-<livewire:livewire-tabs
-    :tabs="[
-        'tab1' => ['label' => 'Tab 1', 'content' => '<p>Content for Tab 1</p>'],
-        'tab2' => ['label' => 'Tab 2', 'content' => '<p>Content for Tab 2</p>'],
-        'tab3' => ['label' => 'Tab 3', 'content' => '<p>Content for Tab 3</p>'],
-    ]"
-    active-tab="tab1"
-/>
+<livewire:b-date-picker date="2026-01-01" format="Y-m-d" />
 ```
 
-Props:
-- `tabs`: The tabs to display.
-- `activeTab`: The active tab.
+External dependency: requires `flatpickr` loaded on the page.
 
-#### Date Picker Component
+#### Livewire Rich Text Editor
 
 ```blade
-<!-- In your Blade view -->
-<livewire:livewire-date-picker
-    date="2023-01-01"
-    format="Y-m-d"
-    min-date="2023-01-01"
-    max-date="2023-12-31"
-    :enable-time="false"
-    :enable-seconds="false"
-    time-format="H:i"
-    placeholder="Select date"
-/>
+<livewire:b-rich-text-editor />
 ```
 
-Props:
-- `date`: The selected date.
-- `format`: The date format.
-- `minDate`: The minimum date.
-- `maxDate`: The maximum date.
-- `enableTime`: Whether to show the time picker.
-- `enableSeconds`: Whether to show the seconds in the time picker.
-- `timeFormat`: The time format.
-- `placeholder`: The placeholder text.
+External dependency: loads CKEditor from CDN by default in the shipped view.
 
-Events:
-- `dateUpdated`: Emitted when the date is updated.
+If you want a Blade-first experience with no extra JS libraries, prefer the Blade components section and use Livewire only for components that are intentionally Livewire-centric.
+
+## View Overrides
+
+To override a component view, publish views and edit the published template:
+
+```bash
+php artisan vendor:publish --tag=bcomponents-views
+```
+
+Then edit files under `resources/views/vendor/bcomponents/...`.
 
 ## Configuration
 
@@ -381,20 +336,16 @@ Breaking changes:
 - `default_classes` removed
 - `css_framework` removed (Tailwind only)
 
-## Performance Optimization
+## Performance Notes
 
-BComponents is optimized for performance with Livewire v3. Here are some of the optimizations:
-
-- **Lazy Loading**: Components are loaded lazily by default, which means they are only loaded when they are needed.
-- **Computed Properties**: Livewire components use computed properties to minimize re-renders.
-- **Debounced Inputs**: Inputs are debounced to minimize the number of requests sent to the server.
-- **Minimized Re-renders**: Components are designed to minimize re-renders by using Alpine.js for client-side interactivity.
-- **Efficient DOM Updates**: Livewire v3's morphdom implementation is used for efficient DOM updates.
-- **Deferred Loading**: Components can be deferred to load after the initial page load.
+This package is primarily Blade-first; runtime performance is mostly determined by your application and Tailwind build settings. A few practical notes:
+- Blade components are regular Laravel components; they do not add runtime overhead beyond view rendering and class computation.
+- Livewire components behave like normal Livewire components; request frequency and DOM updates are controlled by your bindings (debounce, lazy, etc.).
+- Alpine-powered interactions (dropdown/modal/tabs) run client-side and avoid server roundtrips for open/close UI state.
 
 ## Contributing
 
-Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first.
+Contributions are welcome. Start with [instructions.md](file:///workspace/instructions.md) (tests, phpstan, architecture conventions), then open a PR.
 
 ## License
 

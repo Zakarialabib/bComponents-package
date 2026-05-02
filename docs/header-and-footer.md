@@ -2,6 +2,14 @@
 
 These components provide customizable header and footer elements for your application with various positioning, styling, and layout options.
 
+## Status
+
+These components are currently functional and registered (`<x-b-header>`, `<x-b-footer>`), but they are not yet fully normalized to the v1 token/recipe contract used by core primitives (button/input/etc). In particular:
+- They accept Tailwind color fragments like `bgColor="gray-900"` and `textColor="white"` and then build `bg-*` / `text-*` classes internally.
+- They include optional config lookups under keys like `components.header.*` / `components.footer.*` which are not part of the minimal v1 config schema and currently fall back to hardcoded behavior.
+
+If you are building new v1-style components, prefer the token/recipe system and keep these as “legacy/less normalized” until they are migrated.
+
 ## Header Component
 
 The header component provides a flexible top navigation element with support for logo placement, mobile responsiveness, and various styling options.

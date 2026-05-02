@@ -211,7 +211,7 @@ vendor/bin/phpstan analyse
 
 ### Render layer
 - `resources/views/components/*` (public Blade component views)
-- `src/resources/views/*` (legacy/alternate view tree; consider consolidation)
+- `src/resources/views/*` (legacy view tree; not loaded by the package provider)
 
 ### Styling layer
 - `resources/css/*` (token CSS and presets, if present)
@@ -226,7 +226,7 @@ vendor/bin/phpstan analyse
 - `config/bcomponents.php` (public config contract)
 
 ## Alignment Checklist (gaps / follow-ups)
-- Consolidate view sources: `resources/views` vs `src/resources/views` (define one authoritative tree)
+- View source consolidation: `resources/views` is the authoritative tree; `src/resources/views` remains legacy and should be migrated or removed over time.
 - Ensure publish tags match actual directories (avoid publishing missing `public/` trees)
 - Ensure Tailwind scan path docs match the actual shipped view paths
 - Add metadata layer for component docs and compatibility labels
