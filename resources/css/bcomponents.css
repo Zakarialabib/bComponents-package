@@ -1,0 +1,17 @@
+:root {
+  --b-color-primary: #2563eb;
+  --b-color-surface: #ffffff;
+  --b-color-border: #e5e7eb;
+  --b-color-text: #111827;
+  --b-radius-md: 0.5rem;
+  --b-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --b-spacing-control-x: 1rem;
+  --b-font-size-sm: 0.875rem;
+}
+
+.dark {
+  --b-color-surface: #0b1220;
+  --b-color-border: #1f2937;
+  --b-color-text: #f9fafb;
+}
+

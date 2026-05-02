@@ -16,8 +16,8 @@ A modern Laravel Blade component library with Livewire v3 and Alpine.js integrat
 
 - PHP 8.2+
 - Laravel 11+
-- Livewire 3.0+
-- TailwindCSS 3.0+
+- Livewire 3.0+ or 4.0+
+- TailwindCSS 4.0+
 - Alpine.js 3.0+
 
 ## Installation
@@ -36,13 +36,19 @@ php artisan vendor:publish --tag=bcomponents-views
 php artisan vendor:publish --tag=bcomponents-assets
 ```
 
-3. Add the TailwindCSS configuration to your `tailwind.config.js` file:
+3. Include the published CSS/JS (optional):
+
+```blade
+<x-b-assets />
+```
+
+4. Add the TailwindCSS configuration to your `tailwind.config.js` file:
 
 ```js
 module.exports = {
     content: [
         // ...
-        './vendor/zakarialabib/bcomponents/src/resources/views/**/*.blade.php',
+        './vendor/zakarialabib/bcomponents/resources/views/**/*.blade.php',
     ],
     // ...
 }
@@ -71,15 +77,16 @@ Props:
 #### Button Component
 
 ```blade
-<x-b-button type="submit" color="primary" size="md">
+<x-b-button type="submit" tone="primary" variant="solid" size="md">
     Submit
 </x-b-button>
 ```
 
 Props:
 - `type`: The type of button (`button`, `submit`, `reset`).
-- `color`: The color of the button (`primary`, `secondary`, `success`, `danger`, `warning`, `info`).
-- `size`: The size of the button (`sm`, `md`, `lg`, `xl`).
+- `tone`: The semantic tone (`primary`, ...).
+- `variant`: The style variant (`solid`, `outline`, `ghost`, `link`).
+- `size`: The size (`sm`, `md`, `lg`).
 - `icon`: The icon to display in the button.
 - `iconPosition`: The position of the icon (`left`, `right`).
 - `href`: If provided, the button will be rendered as an anchor tag.
@@ -158,8 +165,8 @@ Props:
     <p>This is the modal content.</p>
     
     <x-slot name="footer">
-        <x-b-button color="secondary" data-dismiss="modal">Close</x-b-button>
-        <x-b-button color="primary">Save changes</x-b-button>
+        <x-b-button tone="secondary" data-dismiss="modal">Close</x-b-button>
+        <x-b-button tone="primary">Save changes</x-b-button>
     </x-slot>
 </x-b-modal>
 
@@ -325,56 +332,37 @@ You can customize the components by editing the configuration file located at `c
 
 ```php
 return [
-    // Component prefix used when registering components
     'prefix' => 'b',
-    
-    // Default CSS framework (tailwind or bootstrap)
-    'css_framework' => 'tailwind',
-    
-    // Default classes for components
-    'default_classes' => [
-        'button' => 'inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150',
-        'input' => 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm',
-        // ...
+
+    'theme' => [
+        'preset' => 'default',
+        'dark_mode' => true,
+        'tokens_path' => null,
     ],
-    
-    // Livewire configuration
-    'livewire' => [
-        'enable' => true,
-        'prefix' => 'livewire',
-        'lazy_loading' => true,
-        'polling' => false,
-        'polling_interval' => 2000, // in milliseconds
-    ],
-    
-    // Alpine.js configuration
-    'alpine' => [
-        'enable' => true,
-        'defer' => true,
-        'focus_trap' => true,
-    ],
-    
-    // Component customization
+
     'components' => [
-        // Allow users to override component views
-        'override_path' => null,
-        
-        // Enable or disable specific components
-        'enabled' => [
-            'alert' => true,
-            'button' => true,
-            // ...
-        ],
+        'enabled' => [],
     ],
-    
-    // Performance optimization
-    'performance' => [
-        'defer_loading' => true,
-        'minimize_rerenders' => true,
-        'use_computed_properties' => true,
+
+    'assets' => [
+        'include_css' => true,
+        'include_js' => true,
+    ],
+
+    'livewire' => [
+        'enabled' => true,
+        'compatibility_mode' => 'auto',
+    ],
+
+    'docs' => [
+        'metadata' => true,
     ],
 ];
 ```
+
+Breaking changes:
+- `default_classes` removed
+- `css_framework` removed (Tailwind only)
 
 ## Performance Optimization
 
