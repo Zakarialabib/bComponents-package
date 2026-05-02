@@ -1,23 +1,21 @@
-@props([
-    'type' => 'text',
-    'name' => '',
-    'id' => null,
-    'value' => null,
-    'placeholder' => null,
-    'required' => false,
-    'disabled' => false,
-    'readonly' => false,
-    'autofocus' => false,
-    'prefix' => null,
-    'suffix' => null,
-    'prefixIcon' => null,
-    'suffixIcon' => null,
-    'hasPrefix' => false,
-    'hasSuffix' => false,
-    'hasAddon' => false,
-])
-
 @php
+    $type = $type ?? 'text';
+    $name = $name ?? '';
+    $id = $id ?? null;
+    $value = $value ?? null;
+    $placeholder = $placeholder ?? null;
+    $required = $required ?? false;
+    $disabled = $disabled ?? false;
+    $readonly = $readonly ?? false;
+    $autofocus = $autofocus ?? false;
+    $prefix = $prefix ?? null;
+    $suffix = $suffix ?? null;
+    $prefixIcon = $prefixIcon ?? null;
+    $suffixIcon = $suffixIcon ?? null;
+    $hasPrefix = $hasPrefix ?? false;
+    $hasSuffix = $hasSuffix ?? false;
+    $hasAddon = $hasAddon ?? false;
+
     $inputAttributes = [
         'type' => $type,
         'name' => $name,

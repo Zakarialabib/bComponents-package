@@ -95,6 +95,8 @@ class InputComponent extends BaseComponent
 
     public bool $invalid = false;
 
+    public bool $invalid;
+
     /**
      * Whether the input is readonly.
      *

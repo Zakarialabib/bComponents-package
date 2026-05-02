@@ -9,6 +9,7 @@ final class ComponentRegistry
     public function aliases(): array
     {
         return [
+            'assets' => \Zakarialabib\BComponents\Components\AssetsComponent::class,
             'accordion' => \Zakarialabib\BComponents\Components\AccordionComponent::class,
             'alert' => \Zakarialabib\BComponents\Components\AlertComponent::class,
             'badge' => \Zakarialabib\BComponents\Components\BadgeComponent::class,
@@ -51,4 +52,3 @@ final class ComponentRegistry
         return (bool) ($enabled[$alias] ?? true);
     }
 }
-

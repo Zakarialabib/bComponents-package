@@ -41,10 +41,7 @@ abstract class BaseComponent extends Component
      */
     protected array $props = [];
 
-    /*
-    * @var \Illuminate\View\ComponentAttributeBag
-    */
-    public $attributes;
+    protected array $rawAttributes = [];
 
     /**
      * Create a new component instance.
@@ -64,15 +61,19 @@ abstract class BaseComponent extends Component
         // Initialize component properties from the props array and attributes
         $this->initializeProps(is_array($data) ? $data : []);
 
-        // Initialize events from traits
-        if (method_exists($this, 'initializeEvents')) {
-            $this->initializeEvents();
+        if (!$this->initialized) {
+            if (method_exists($this, 'initializeEvents')) {
+                $this->initializeEvents();
+            }
+
+            if (method_exists($this, 'rules') && $this->rules()) {
+                $this->validateProps();
+            }
+
+            $this->initialized = true;
         }
 
-        // Validate props if validation rules exist
-        if (method_exists($this, 'rules') && $this->rules()) {
-            $this->validateProps();
-        }
+        return $this;
     }
 
     /**

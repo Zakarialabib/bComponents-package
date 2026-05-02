@@ -5,6 +5,8 @@
   --b-color-text: #111827;
   --b-radius-md: 0.5rem;
   --b-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --b-spacing-control-x: 1rem;
+  --b-font-size-sm: 0.875rem;
 }
 
 .dark {

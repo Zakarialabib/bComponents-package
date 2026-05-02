@@ -2,6 +2,7 @@
 
 return [
     'prefix' => 'b',
+  
     'theme' => [
         'preset' => 'default',
         'dark_mode' => true,

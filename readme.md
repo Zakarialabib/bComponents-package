@@ -40,7 +40,13 @@ php artisan vendor:publish --tag=bcomponents-views
 php artisan vendor:publish --tag=bcomponents-assets
 ```
 
-3. Add the TailwindCSS configuration to your `tailwind.config.js` file:
+3. Include the published CSS/JS (optional):
+
+```blade
+<x-b-assets />
+```
+
+4. Add the TailwindCSS configuration to your `tailwind.config.js` file:
 
 ```js
 module.exports = {
@@ -76,15 +82,16 @@ Props:
 #### Button Component
 
 ```blade
-<x-b-button type="submit" color="primary" size="md">
+<x-b-button type="submit" tone="primary" variant="solid" size="md">
     Submit
 </x-b-button>
 ```
 
 Props:
 - `type`: The type of button (`button`, `submit`, `reset`).
-- `color`: The color of the button (`primary`, `secondary`, `success`, `danger`, `warning`, `info`).
-- `size`: The size of the button (`sm`, `md`, `lg`, `xl`).
+- `tone`: The semantic tone (`primary`, ...).
+- `variant`: The style variant (`solid`, `outline`, `ghost`, `link`).
+- `size`: The size (`sm`, `md`, `lg`).
 - `icon`: The icon to display in the button.
 - `iconPosition`: The position of the icon (`left`, `right`).
 - `href`: If provided, the button will be rendered as an anchor tag.
@@ -163,8 +170,8 @@ Props:
     <p>This is the modal content.</p>
     
     <x-slot name="footer">
-        <x-b-button color="secondary" data-dismiss="modal">Close</x-b-button>
-        <x-b-button color="primary">Save changes</x-b-button>
+        <x-b-button tone="secondary" data-dismiss="modal">Close</x-b-button>
+        <x-b-button tone="primary">Save changes</x-b-button>
     </x-slot>
 </x-b-modal>
 

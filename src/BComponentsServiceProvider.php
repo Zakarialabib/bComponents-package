@@ -7,6 +7,7 @@ namespace Zakarialabib\BComponents;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Zakarialabib\BComponents\Support\ComponentRegistry;
+use Zakarialabib\BComponents\Support\Metadata\ComponentMetadataRepository;
 
 class BComponentsServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,10 @@ class BComponentsServiceProvider extends ServiceProvider
 
         $this->app->singleton(ComponentRegistry::class, function () {
             return new ComponentRegistry();
+        });
+
+        $this->app->singleton(ComponentMetadataRepository::class, function () {
+            return new ComponentMetadataRepository();
         });
     }
 
