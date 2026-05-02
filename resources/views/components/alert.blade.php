@@ -29,8 +29,13 @@
 ])
 
 @if ($show)
+    @php
+        $canClose = $dismissible && $closeable && !$persistent;
+        $wrapperClasses = trim("fixed {$positionClasses} {$sizeClasses} z-50 max-w-sm w-full {$classes}");
+    @endphp
+
     <div 
-        {{ $attributes->merge(['class' => $classes]) }}
+        {{ $attributes->merge(['class' => $wrapperClasses]) }}
         x-data="{ 
             open: true,
             init() {
@@ -46,15 +51,15 @@
         x-show="open"
         x-transition:enter="{{ $animationClasses }}"
         x-transition:leave="{{ $animationClasses }}"
-        @if($closeOnClick) @click.self="open = false" @endif
-        @if($closeOnEsc) @keydown.escape.window="open = false" @endif
+        @if($canClose && $closeOnClick) @click.self="open = false" @endif
+        @if($canClose && $closeOnEsc) @keydown.escape.window="open = false" @endif
         role="{{ $role }}"
         data-sound="{{ $sound }}"
         data-sound-src="{{ $soundSrc }}"
         data-duration="{{ $duration }}"
         data-position="{{ $position }}"
         data-queue-group="{{ $queueGroup }}"
-        class="fixed {{ $positionClasses }} {{ $sizeClasses }} z-50 max-w-sm w-full">
+    >
         <div class="flex">
             @if ($showIcon && $icon)
                 <div class="flex-shrink-0">
@@ -94,10 +99,10 @@
                 </div>
             </div>
             
-            @if ($dismissible)
+            @if ($canClose)
                 <div class="ml-auto pl-3">
                     <div class="-mx-1.5 -my-1.5">
-                        <button type="button" @click="open = false" class="inline-flex rounded-md p-1.5 {{ $textColorClass }} hover:bg-{{ substr($type, 0, strpos($type, '-') ?: strlen($type)) }}-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ substr($type, 0, strpos($type, '-') ?: strlen($type)) }}-400">
+                        <button type="button" @click="open = false" class="inline-flex rounded-md p-1.5 {{ $textColorClass }} hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[color:var(--b-color-border)]">
                             <span class="sr-only">Dismiss</span>
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />

@@ -4,10 +4,28 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Components;
 
-use Illuminate\Support\Arr;
-
 class ModalComponent extends BaseComponent
 {
+    public function __construct(
+        string $name = '',
+        bool $show = false,
+        string $maxWidth = '2xl',
+        bool $centered = false,
+        bool $scrollable = false,
+        bool $static = false,
+        ?string $title = null,
+    ) {
+        parent::__construct();
+
+        $this->name = $name;
+        $this->show = $show;
+        $this->maxWidth = $maxWidth;
+        $this->centered = $centered;
+        $this->scrollable = $scrollable;
+        $this->static = $static;
+        $this->title = $title;
+    }
+
     /**
      * The modal name (used for targeting).
      */
@@ -46,23 +64,17 @@ class ModalComponent extends BaseComponent
     /**
      * The component's view name.
      */
-    protected string $view = 'bcomponents::components.modal';
-    
-    /**
-     * Create a new component instance.
-     */
-    public function __construct(array $attributes = [])
-    {
-        $this->name = $attributes['name'] ?? '';
-        $this->show = $attributes['show'] ?? false;
-        $this->maxWidth = $attributes['max-width'] ?? '2xl';
-        $this->centered = $attributes['centered'] ?? false;
-        $this->scrollable = $attributes['scrollable'] ?? false;
-        $this->static = $attributes['static'] ?? false;
-        $this->title = $attributes['title'] ?? null;
-        
-        parent::__construct($attributes);
-    }
+    protected ?string $view = 'bcomponents::components.modal';
+
+    protected array $props = [
+        'name' => '',
+        'show' => false,
+        'maxWidth' => '2xl',
+        'centered' => false,
+        'scrollable' => false,
+        'static' => false,
+        'title' => null,
+    ];
     
     /**
      * Get the validation rules that apply to the component.
@@ -98,13 +110,9 @@ class ModalComponent extends BaseComponent
             '7xl' => 'sm:max-w-7xl',
             'full' => 'sm:max-w-full',
         ];
-        
-        return [
-            'attributes' => $this->attributes(),
+
+        return array_merge(parent::viewData(), [
             'maxWidthClass' => $maxWidthClasses[$this->maxWidth] ?? $maxWidthClasses['2xl'],
-            'centered' => $this->centered,
-            'scrollable' => $this->scrollable,
-            'static' => $this->static,
-        ];
+        ]);
     }
 }

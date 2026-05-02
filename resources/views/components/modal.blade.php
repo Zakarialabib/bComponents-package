@@ -59,7 +59,7 @@
 
     <div
         x-show="show"
-        class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidthClass }} sm:mx-auto {{ $scrollable ? 'overflow-y-auto max-h-[80vh]' : '' }}"
+        class="mb-6 bg-[color:var(--b-color-surface)] text-[color:var(--b-color-text)] rounded-[var(--b-radius-md)] overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidthClass }} sm:mx-auto {{ $scrollable ? 'overflow-y-auto max-h-[80vh]' : '' }}"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
@@ -68,22 +68,24 @@
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
         @if ($title)
-            <div class="px-6 py-4 border-b border-gray-200">
+            <div class="px-6 py-4 border-b border-[color:var(--b-color-border)]">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-medium text-gray-900">
+                    <h3 class="text-lg font-medium">
                         {{ $title }}
                     </h3>
                     
-                    <button 
-                        type="button" 
-                        class="text-gray-400 hover:text-gray-500"
-                        x-on:click="show = false"
-                    >
-                        <span class="sr-only">Close</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                    @unless ($static)
+                        <button 
+                            type="button" 
+                            class="text-[color:var(--b-color-text)] opacity-70 hover:opacity-100"
+                            x-on:click="show = false"
+                        >
+                            <span class="sr-only">Close</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    @endunless
                 </div>
             </div>
         @endif
@@ -93,7 +95,7 @@
         </div>
         
         @if (isset($footer))
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end space-x-3">
+            <div class="px-6 py-4 border-t border-[color:var(--b-color-border)] flex justify-end space-x-3">
                 {{ $footer }}
             </div>
         @endif

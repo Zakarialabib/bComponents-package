@@ -24,7 +24,7 @@ class LoadingComponent extends BaseComponent
     /**
      * The component's view name.
      */
-    protected string $view = 'bcomponents::components.loading';
+    protected ?string $view = 'bcomponents::components.loading';
 
     /**
      * The component's default properties.
