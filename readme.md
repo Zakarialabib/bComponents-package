@@ -12,6 +12,10 @@ A modern Laravel Blade component library with Livewire v3 and Alpine.js integrat
 - 🔧 Highly customizable
 - ⚡ Performance optimized for Livewire v3
 
+## Architecture
+
+See [docs/architecture/bcomponents-conceptual-architecture.md](docs/architecture/bcomponents-conceptual-architecture.md).
+
 ## Requirements
 
 - PHP 8.2+
