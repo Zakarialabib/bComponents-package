@@ -44,6 +44,15 @@ The system SHALL centralize component registration in a registry/manager object.
 - **WHEN** a consumer disables a component in config
 - **THEN** the component SHALL not be registered (or SHALL fail with a clear error on use, depending on chosen strategy during implementation).
 
+### Requirement: Livewire Component Registration
+The system SHALL register packaged Livewire components when Livewire is enabled.
+- Registration SHALL be gated by `config('bcomponents.livewire.enabled')`.
+- Livewire component names SHALL use the same prefix as Blade components (default `b`), e.g. `b-modal`, `b-dropdown`.
+
+#### Scenario: Livewire enabled
+- **WHEN** Livewire is installed and `bcomponents.livewire.enabled=true`
+- **THEN** `<livewire:b-modal />` and other registered tags resolve to the package Livewire components.
+
 ### Requirement: Core Component Contract
 The system SHALL define stable prop naming conventions for Tier 1–3 components.
 - Standard props (where applicable) SHALL include: `variant`, `size`, `tone`, `disabled`, `loading`, `icon`, `class`.

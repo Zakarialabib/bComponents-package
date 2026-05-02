@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Status:** Implemented in the current codebase. This document remains as a historical plan; prefer current docs and tests.
+
 **Goal:** Fix style/initialization issues, modularize recipes, then normalize Tier 1–3 components (Alert/Card/Modal/Dropdown/Tabs) and add CLI-only render tests.
 
 **Architecture:** Keep recipe entrypoints pure and stable (`ButtonStyles::classes()`, `InputStyles::classes()`), but split internal responsibilities into modules (base/size/variant/tone/state). Components stay thin and call the entrypoint only.

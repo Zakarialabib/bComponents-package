@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Status:** Implemented. The conceptual architecture doc exists under `docs/architecture/` and README links should be kept consistent with it.
+
 **Goal:** Add an authoritative conceptual architecture document for bComponents and wire it into existing docs/README, with CLI-only verification guidance (no web browser).
 
 **Architecture:** Documentation-only change. Create a single source-of-truth architecture document, link it from README, add an “architecture-to-code mapping” section, and document CLI verification commands.
@@ -205,7 +207,7 @@ Each component should carry one of these labels in docs/metadata:
 
 ### Render layer
 - `resources/views/components/*` (public Blade component views)
-- `src/resources/views/*` (legacy/alternate view tree; consider consolidation)
+- `src/resources/views/*` (legacy view tree; not loaded by the package provider)
 
 ### Styling layer
 - `resources/css/*` (token CSS and presets, if present)
@@ -220,7 +222,7 @@ Each component should carry one of these labels in docs/metadata:
 - `config/bcomponents.php` (public config contract)
 
 ## Alignment Checklist (gaps / follow-ups)
-- Consolidate view sources: `resources/views` vs `src/resources/views` (define one authoritative tree)
+- View source consolidation: `resources/views` is the authoritative tree; `src/resources/views` remains legacy and should be migrated or removed over time.
 - Ensure publish tags match actual directories (avoid publishing missing `public/` trees)
 - Ensure Tailwind scan path docs match the actual shipped view paths
 - Add metadata layer for component docs and compatibility labels
@@ -309,4 +311,3 @@ Expected: no matches.
 - Includes theming model (tokens + recipes + override levels)
 - Includes consumption modes (zero-build, consumer-build, hybrid)
 - Includes CLI-only testing guidance (explicitly no web browser)
-

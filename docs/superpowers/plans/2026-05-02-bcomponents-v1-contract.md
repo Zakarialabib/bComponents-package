@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Status:** Implemented in the current codebase. Treat the remaining checkbox sections as historical execution notes; prefer the “code truth” in `readme.md`, `instructions.md`, and the PHPUnit/PHPStan baselines.
+
 **Goal:** Refactor the package into a stable, Blade-first `<x-b-*>` component library with a minimal config, centralized registration, token-based theming, recipe-driven classes, metadata scaffolding, and a test baseline.
 
 **Architecture:** Keep existing class-based Blade components, but route registration through a single registry and compute classes through centralized recipe builders. Ship theme tokens as plain CSS variables and reference them via Tailwind v4 arbitrary values in Blade class strings.
@@ -402,4 +404,3 @@ Expected: PASS
 - Covers component normalization (Task 6)
 - Covers metadata scaffolding (Task 7)
 - Covers automated tests (Task 8)
-

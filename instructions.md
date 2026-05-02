@@ -1,263 +1,115 @@
-# BComponents Development Plan
+# BComponents Contributor Guide
 
-## Scope
-- Focus only on improving the BaseComponent and Button classes
-- Maintain compatibility with existing usage patterns
-- Enhance the component's flexibility and reusability
-- No need for documentation at this stage
+This document is the source-of-truth for how the repository is structured today, how the package is intended to evolve, and how to ship changes without introducing architecture drift.
 
-## Current Component Structure
+## Quick Start
 
-The package currently has two separate component systems:
-1. Livewire components (src/Livewire/BaseComponent.php)
-2. Blade components (src/Components/ButtonComponent.php)
-
-We need to standardize and improve both systems, starting with the Blade components.
-
-## Current Button Component Structure
-```php
-class ButtonComponent extends BaseComponent
-{
-    // Constants for better maintainability
-    public const TYPE_BUTTON = 'button';
-    public const TYPE_SUBMIT = 'submit';
-    public const TYPE_RESET = 'reset';
-    public const TYPE_LINK = 'link';
-
-    public const VARIANT_SOLID = 'solid';
-    public const VARIANT_OUTLINE = 'outline';
-    public const VARIANT_SOFT = 'soft';
-    public const VARIANT_GHOST = 'ghost';
-    public const VARIANT_LINK = 'link';
-
-    // Component properties
-    public string $type = self::TYPE_BUTTON;
-    public string $color = 'primary';
-    public string $variant = self::VARIANT_SOLID;
-    public string $size = 'md';
-    public string $rounded = 'md';
-    public bool $isDisabled = false;
-    public bool $isLoading = false;
-    public bool $isActive = false;
-    public bool $isBlock = false;
-    public ?string $icon = null;
-    public string $iconPosition = 'left';
-    public bool $isIconOnly = false;
-    public ?string $href = null;
-    public ?string $wireClick = null;
-    public ?string $alpineClick = null;
-    public ?string $group = null;
-    public ?string $groupPosition = null;
-    
-    // Additional methods and properties...
-}
+```bash
+composer install --no-interaction
+vendor/bin/phpunit
+vendor/bin/phpstan analyse --no-progress --memory-limit=1G
 ```
 
-## Refactoring Goals
-1. Fix issues with the abstract base component
-2. Standardize attribute/prop handling approach
-3. Improve variant and state management
-4. Enhance class merging and attribute handling
-5. Maintain backward compatibility
+## Current Architecture (Code Truth)
 
-## BaseComponent Improvements
+### 1) Configuration
+- Config file: [bcomponents.php](file:///workspace/config/bcomponents.php)
+- Key principles:
+  - Minimal, versionable schema
+  - Tailwind-only styling baseline
+  - Prefix drives both Blade and Livewire tag names
 
-```php
-<?php
+### 2) Blade Component Registration
+- Registry: [ComponentRegistry.php](file:///workspace/src/Support/ComponentRegistry.php)
+- Service provider: [BComponentsServiceProvider.php](file:///workspace/src/BComponentsServiceProvider.php)
+- Behavior:
+  - Blade tags are registered as `<x-{prefix}-{alias}>` (default: `<x-b-*>`)
+  - Enable/disable is config-driven (`bcomponents.components.enabled`)
 
-// just an example of the namespace
-namespace App\View\Components\Base;
+### 3) Views (Canonical Root)
+- Canonical view root: [resources/views](file:///workspace/resources/views)
+- Package view namespace: `bcomponents::...`
+- Override behavior:
+  - Publish views with `php artisan vendor:publish --tag=bcomponents-views`
+  - Edit overrides in `resources/views/vendor/bcomponents/...`
 
-use Illuminate\View\Component;
-use Illuminate\Support\Arr;
+### 4) Styling: Tokens + Recipes
+- Tokens are plain CSS variables: [bcomponents.css](file:///workspace/resources/css/bcomponents.css), presets under [themes](file:///workspace/resources/css/themes)
+- Recipes are pure PHP class builders:
+  - [ButtonStyles.php](file:///workspace/src/Support/Styles/ButtonStyles.php)
+  - [InputStyles.php](file:///workspace/src/Support/Styles/InputStyles.php)
+  - [SurfaceStyles.php](file:///workspace/src/Support/Styles/SurfaceStyles.php)
 
-abstract class BaseComponent extends Component
-{
-    /**
-     * Additional CSS classes.
-     *
-     * @var string
-     */
-    public $class;
+### 5) BaseComponent Philosophy (Blade)
+Blade BaseComponent exists to share package behavior, not to replace Laravel’s constructor prop system.
+- File: [BaseComponent.php](file:///workspace/src/Components/BaseComponent.php)
+- Supported:
+  - class merging utilities
+  - predictable attribute helpers
+  - optional validation through `rules()` when components opt-in
+- Avoid:
+  - “smart” prop hydration that overwrites constructor-provided values
+  - silent view guessing that hides missing views
 
-    /**
-     * Create the component instance.
-     *
-     * @param  string  $class
-     * @return void
-     */
-    public function __construct($class = '')
-    {
-        $this->class = $class;
-    }
+### 6) Livewire Integration
+Livewire components exist under [src/Livewire](file:///workspace/src/Livewire).
+- They are registered automatically (when enabled) by the package provider.
+- Tags match Blade prefix: `<livewire:b-*>` by default.
+- Views are in [resources/views/livewire](file:///workspace/resources/views/livewire) and share the same `bcomponents::livewire.*` namespace.
 
-    /**
-     * Merge component classes with additional classes.
-     *
-     * @param  string|array  $classes
-     * @return string
-     */
-    protected function mergeClasses($classes)
-    {
-        $classes = is_array($classes) ? implode(' ', $classes) : $classes;
-        return trim($classes . ' ' . $this->class);
-    }
+## Public API Conventions
 
-    /**
-     * Get a configuration value with a fallback.
-     *
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return mixed
-     */
-    protected function config($key, $default = null)
-    {
-        return config('ui-components.' . $key, $default);
-    }
+### Canonical naming
+Prefer canonical v1 prop names:
+- `tone`, `variant`, `size`, `disabled`, `loading`, `invalid`, `fullWidth`, `iconOnly`
 
-    /**
-     * Validate enum-like values against allowed options.
-     *
-     * @param  mixed  $value
-     * @param  array  $allowed
-     * @param  mixed  $default
-     * @return mixed
-     */
-    protected function validateEnum($value, array $allowed, $default)
-    {
-        return in_array($value, $allowed) ? $value : $default;
-    }
+### Legacy aliases (deprecation layer)
+Some components still accept legacy prop names as aliases:
+- Example: `ButtonComponent` still supports `isDisabled` → `disabled`, etc.
+- Treat aliases as a migration bridge; do not introduce new aliases unless necessary.
 
-    /**
-     * Parse boolean attributes.
-     *
-     * @param  mixed  $value
-     * @return bool
-     */
-    protected function parseBoolean($value)
-    {
-        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
-    }
-}
+## How to Add or Normalize a Blade Component
+
+1) Implement the component class under [src/Components](file:///workspace/src/Components)
+- Prefer constructor props (typed where reasonable) with defaults
+- Set explicit `$view = 'bcomponents::components.<name>'`
+- Use recipes for computed class strings when possible
+
+2) Implement the Blade view under [resources/views/components](file:///workspace/resources/views/components)
+- Use `$attributes->merge(['class' => $classes])` for consistent class merging
+- Prefer token variables for color/spacing/radius/shadow
+
+3) Register the component alias
+- Add alias → class mapping to [ComponentRegistry.php](file:///workspace/src/Support/ComponentRegistry.php)
+
+4) Add metadata
+- Add an entry to [ComponentMetadataRepository.php](file:///workspace/src/Support/Metadata/ComponentMetadataRepository.php)
+
+5) Add tests
+- Blade render smoke tests live under [tests/Feature/Components](file:///workspace/tests/Feature/Components)
+- Livewire render smoke tests live under [tests/Feature/Livewire](file:///workspace/tests/Feature/Livewire)
+
+6) Verify
+```bash
+vendor/bin/phpunit
+vendor/bin/phpstan analyse --no-progress --memory-limit=1G
 ```
 
-## Button Component Improvements
+## Roadmap (Contributor View)
 
-```php
-<?php
+### Phase 1: Architecture stabilization
+- Remove stale config references
+- Use one canonical view root
+- Keep BaseComponent narrow and predictable
 
-// just an example of the namespace
-namespace App\View\Components\Button;
+### Phase 2: Lock Tier 1 Blade contracts
+- Finalize one canonical prop contract per Tier 1 component
+- Formalize a11y baselines and add tests for them
 
-use App\View\Components\Base\BaseComponent;
+### Phase 3: Formalize theming
+- Document token families + override contract
+- Decide whether to support “consumer-build” Tailwind workflows cleanly
 
-class Button extends BaseComponent
-{
-    /**
-     * Available button variants.
-     *
-     * @var array
-     */
-    public static $variants = [
-        'primary', 'secondary', 'success', 'danger', 'warning', 'info', 
-        'dark', 'light', 'link', 'outline-primary', 'outline-secondary'
-    ];
-    
-    /**
-     * Available button sizes.
-     *
-     * @var array
-     */
-    public static $sizes = ['xs', 'sm', 'md', 'lg', 'xl'];
-    
-    /**
-     * Button type attribute.
-     *
-     * @var string
-     */
-    public $type;
-    
-    /**
-     * Button variant.
-     *
-     * @var string
-     */
-    public $variant;
-    
-    /**
-     * Button size.
-     *
-     * @var string
-     */
-    public $size;
-    
-    /**
-     * Is button disabled.
-     *
-     * @var bool
-     */
-    public $disabled;
-    
-    /**
-     * Is button in loading state.
-     *
-     * @var bool
-     */
-    public $loading;
-    
-    /**
-     * Button icon.
-     *
-     * @var string|null
-     */
-    public $icon;
-    
-    /**
-     * Button icon position.
-     *
-     * @var string
-     */
-    public $iconPosition;
-    
-    /**
-     * Create the component instance.
-     *
-     * @param  string  $type
-     * @param  string  $variant
-     * @param  string  $size
-     * @param  bool  $disabled
-     * @param  bool  $loading
-     * @param  string|null  $icon
-     * @param  string  $iconPosition
-     * @param  string  $class
-     * @return void
-     */
-    public function __construct(
-        $type = 'button',
-        $variant = 'primary',
-        $size = 'md',
-        $disabled = false,
-        $loading = false,
-        $icon = null,
-        $iconPosition = 'left',
-        $class = ''
-    ) {
-        parent::__construct($class);
-        
-        $this->type = $type;
-        $this->variant = $this->validateEnum($variant, static::$variants, 'primary');
-        $this->size = $this->validateEnum($size, static::$sizes, 'md');
-        $this->disabled = $this->parseBoolean($disabled);
-        $this->loading = $this->parseBoolean($loading);
-        $this->icon = $icon;
-        $this->iconPosition = $this->validateEnum($iconPosition, ['left', 'right'], 'left');
-    }
-    
-    /**
-     * Get the button variant classes.
-     *
-     * @return string
-     */
     protected function getVariantClasses()
     {
         // First try to get from config if it exists

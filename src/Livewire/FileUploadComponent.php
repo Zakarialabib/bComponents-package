@@ -64,7 +64,7 @@ class FileUploadComponent extends BaseComponent
      *
      * @var array
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * The listeners for the component.

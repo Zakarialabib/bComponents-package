@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Status:** Implemented in the current codebase. This document remains as a historical execution plan; prefer current docs (`readme.md`, `instructions.md`) and tests as the truth.
+
 **Goal:** Ship a stable, Blade-first `<x-b-*>` component package with a minimal config contract, centralized registration, token-based theming, recipe-based styling, Livewire-safe behavior, and CLI-only tests for Tier 1–3 components.
 
 **Architecture:** Keep class-based Blade components but normalize a v1 prop contract (`variant/size/tone/disabled/loading`) and compute classes via recipe builders referencing semantic CSS-variable tokens (Tailwind v4 direction). Load views with override-first semantics and support both current view trees until consolidated.
@@ -18,7 +20,7 @@
 - `config/bcomponents.php`
 - `readme.md`
 - Component classes under `src/Components/*Component.php`
-- Blade views under `resources/views` and/or `src/resources/views`
+- Blade views under `resources/views` (canonical). `src/resources/views` is legacy and not loaded by the package provider.
 
 **Create**
 - `src/Support/ComponentRegistry.php`
@@ -161,13 +163,11 @@ final class ComponentRegistry
 }
 ```
 
-- [ ] **Step 2: Load views with override-first semantics**
-Update `boot()` to load in this order:
-1) published override path: `resource_path('views/vendor/bcomponents')` (if exists)
-2) package path A: `__DIR__ . '/resources/views'` (for `src/resources/views`)
-3) package path B: `__DIR__ . '/../resources/views'` (for `resources/views`)
+- [ ] **Step 2: Load views using standard Laravel package conventions**
+Update `boot()` to load one canonical package view root:
+- package root: `__DIR__ . '/../resources/views'`
 
-Expected: `bcomponents::components.*` and `bcomponents::livewire.*` resolve regardless of current view tree placement.
+Expected: `bcomponents::components.*` and `bcomponents::livewire.*` resolve, and consumers override views via `resources/views/vendor/bcomponents` after publishing.
 
 - [ ] **Step 3: Register Blade components from registry**
 Update registration to:
@@ -300,8 +300,7 @@ Expected: PASS.
 ### Task 8: Self-review and alignment cleanup
 
 - [ ] **Step 1: Verify view paths**
-Confirm `bcomponents::components.*` resolves for components whose views live only under `src/resources/views` today.
+Confirm `bcomponents::components.*` and `bcomponents::livewire.*` do not depend on `src/resources/views` (legacy) and that any remaining legacy templates are migrated or clearly marked as legacy.
 
 - [ ] **Step 2: Verify docs**
 Update README Tailwind content paths to match actual shipped view tree(s).
-
