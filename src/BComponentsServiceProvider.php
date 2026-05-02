@@ -6,42 +6,7 @@ namespace Zakarialabib\BComponents;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\View;
-use Illuminate\Foundation\Application;
-use Zakarialabib\BComponents\Components\{
-    AccordionComponent,
-    AlertComponent,
-    BadgeComponent,
-    BreadcrumbComponent,
-    ButtonComponent,
-    CardComponent,
-    CheckboxComponent,
-    ContainerComponent,
-    DividerComponent,
-    DrawerComponent,
-    FlexComponent,
-    FooterComponent,
-    FormGroupComponent,
-    GridComponent,
-    HeaderComponent,
-    InputComponent,
-    LoadingComponent,
-    ModalComponent,
-    RadioComponent,
-    SelectComponent,
-    SpacerComponent,
-    TableComponent,
-    TextareaComponent,
-    ToastComponent,
-    ToggleComponent
-};
-use Zakarialabib\BComponents\Components\Table\{
-    TableHeaderComponent,
-    TableBodyComponent,
-    TableRowComponent,
-    TableCellComponent
-};
+use Zakarialabib\BComponents\Support\ComponentRegistry;
 
 class BComponentsServiceProvider extends ServiceProvider
 {
@@ -54,19 +19,13 @@ class BComponentsServiceProvider extends ServiceProvider
     {
         $this->registerPublishables();
         $this->registerBladeComponents();
-        
-        // Load views from both package and published locations
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bcomponents');
-        
-        // Also register the views without the namespace for direct access
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', null);
-        
-        // Load published views
+
         if (is_dir(resource_path('views/vendor/bcomponents'))) {
             $this->loadViewsFrom(resource_path('views/vendor/bcomponents'), 'bcomponents');
         }
-        
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'bcomponents');
+
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'bcomponents');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bcomponents');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -87,6 +46,10 @@ class BComponentsServiceProvider extends ServiceProvider
         $this->app->singleton('bcomponents', function ($app) {
             return new BladeComponentManager($app);
         });
+
+        $this->app->singleton(ComponentRegistry::class, function () {
+            return new ComponentRegistry();
+        });
     }
 
     /**
@@ -102,20 +65,13 @@ class BComponentsServiceProvider extends ServiceProvider
             ], 'bcomponents-config');
 
             $this->publishes([
-                __DIR__ . '/../resources/views' => resource_path('views/vendor/bcomponents'),
+                __DIR__ . '/resources/views' => resource_path('views/vendor/bcomponents'),
             ], 'bcomponents-views');
 
             $this->publishes([
-                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/bcomponents'),
-            ], 'bcomponents-translations');
-
-            $this->publishes([
-                __DIR__ . '/../public' => public_path('vendor/bcomponents'),
+                __DIR__ . '/../resources/css' => public_path('vendor/bcomponents/css'),
+                __DIR__ . '/../resources/js' => public_path('vendor/bcomponents/js'),
             ], 'bcomponents-assets');
-
-            $this->publishes([
-                __DIR__ . '/../stubs' => base_path('stubs/bcomponents'),
-            ], 'bcomponents-stubs');
         }
     }
 
@@ -126,44 +82,14 @@ class BComponentsServiceProvider extends ServiceProvider
      */
     private function registerBladeComponents(): void
     {
-        // Register component namespace
-        Blade::componentNamespace('Zakarialabib\\BComponents\\Components', 'bcomponents');
-        
-        $prefix = Config::get('bcomponents.prefix', 'b');
+        $prefix = (string) config('bcomponents.prefix', 'b');
+        $registry = $this->app->make(ComponentRegistry::class);
 
-        $components = [
-            'accordion' => AccordionComponent::class,
-            'alert' => AlertComponent::class,
-            'badge' => BadgeComponent::class,
-            'breadcrumb' => BreadcrumbComponent::class,
-            'button' => ButtonComponent::class,
-            'card' => CardComponent::class,
-            'checkbox' => CheckboxComponent::class,
-            'container' => ContainerComponent::class,
-            'divider' => DividerComponent::class,
-            'drawer' => DrawerComponent::class,
-            'flex' => FlexComponent::class,
-            'footer' => FooterComponent::class,
-            'form-group' => FormGroupComponent::class,
-            'grid' => GridComponent::class,
-            'header' => HeaderComponent::class,
-            'input' => InputComponent::class,
-            'loading' => LoadingComponent::class,
-            'modal' => ModalComponent::class,
-            'radio' => RadioComponent::class,
-            'select' => SelectComponent::class,
-            'spacer' => SpacerComponent::class,
-            'table' => TableComponent::class,
-            'table.header' => TableHeaderComponent::class,
-            'table.body' => TableBodyComponent::class,
-            'table.row' => TableRowComponent::class,
-            'table.cell' => TableCellComponent::class,
-            'textarea' => TextareaComponent::class,
-            'toast' => ToastComponent::class,
-            'toggle' => ToggleComponent::class,
-        ];
+        foreach ($registry->aliases() as $alias => $class) {
+            if (!$registry->enabled($alias)) {
+                continue;
+            }
 
-        foreach ($components as $alias => $class) {
             Blade::component($class, "{$prefix}-{$alias}");
         }
     }

@@ -20,8 +20,8 @@ See [docs/architecture/bcomponents-conceptual-architecture.md](docs/architecture
 
 - PHP 8.2+
 - Laravel 11+
-- Livewire 3.0+
-- TailwindCSS 3.0+
+- Livewire 3.0+ or 4.0+
+- TailwindCSS 4.0+
 - Alpine.js 3.0+
 
 ## Installation
@@ -46,6 +46,7 @@ php artisan vendor:publish --tag=bcomponents-assets
 module.exports = {
     content: [
         // ...
+        './vendor/zakarialabib/bcomponents/resources/views/**/*.blade.php',
         './vendor/zakarialabib/bcomponents/src/resources/views/**/*.blade.php',
     ],
     // ...
@@ -329,56 +330,37 @@ You can customize the components by editing the configuration file located at `c
 
 ```php
 return [
-    // Component prefix used when registering components
     'prefix' => 'b',
-    
-    // Default CSS framework (tailwind or bootstrap)
-    'css_framework' => 'tailwind',
-    
-    // Default classes for components
-    'default_classes' => [
-        'button' => 'inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150',
-        'input' => 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm',
-        // ...
+
+    'theme' => [
+        'preset' => 'default',
+        'dark_mode' => true,
+        'tokens_path' => null,
     ],
-    
-    // Livewire configuration
-    'livewire' => [
-        'enable' => true,
-        'prefix' => 'livewire',
-        'lazy_loading' => true,
-        'polling' => false,
-        'polling_interval' => 2000, // in milliseconds
-    ],
-    
-    // Alpine.js configuration
-    'alpine' => [
-        'enable' => true,
-        'defer' => true,
-        'focus_trap' => true,
-    ],
-    
-    // Component customization
+
     'components' => [
-        // Allow users to override component views
-        'override_path' => null,
-        
-        // Enable or disable specific components
-        'enabled' => [
-            'alert' => true,
-            'button' => true,
-            // ...
-        ],
+        'enabled' => [],
     ],
-    
-    // Performance optimization
-    'performance' => [
-        'defer_loading' => true,
-        'minimize_rerenders' => true,
-        'use_computed_properties' => true,
+
+    'assets' => [
+        'include_css' => true,
+        'include_js' => true,
+    ],
+
+    'livewire' => [
+        'enabled' => true,
+        'compatibility_mode' => 'auto',
+    ],
+
+    'docs' => [
+        'metadata' => true,
     ],
 ];
 ```
+
+Breaking changes:
+- `default_classes` removed
+- `css_framework` removed (Tailwind only)
 
 ## Performance Optimization
 
