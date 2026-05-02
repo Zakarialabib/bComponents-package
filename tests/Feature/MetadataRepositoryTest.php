@@ -4,28 +4,34 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Tests\Feature;
 
+use Zakarialabib\BComponents\Support\ComponentRegistry;
 use Zakarialabib\BComponents\Support\Metadata\ComponentMetadataRepository;
 use Zakarialabib\BComponents\Tests\TestCase;
 
 final class MetadataRepositoryTest extends TestCase
 {
-    public function test_metadata_repository_exposes_core_components(): void
+    public function test_metadata_repository_covers_all_public_components(): void
     {
         $repo = $this->app->make(ComponentMetadataRepository::class);
         $all = $repo->all();
 
-        $this->assertArrayHasKey('button', $all);
-        $this->assertArrayHasKey('input', $all);
-        $this->assertArrayHasKey('textarea', $all);
-        $this->assertArrayHasKey('select', $all);
-        $this->assertArrayHasKey('checkbox', $all);
-        $this->assertArrayHasKey('radio', $all);
-        $this->assertArrayHasKey('toggle', $all);
-        $this->assertArrayHasKey('alert', $all);
-        $this->assertArrayHasKey('card', $all);
-        $this->assertArrayHasKey('modal', $all);
-        $this->assertArrayHasKey('dropdown', $all);
-        $this->assertArrayHasKey('tabs', $all);
+        $registry = new ComponentRegistry();
+        foreach (array_keys($registry->aliases()) as $alias) {
+            $this->assertArrayHasKey($alias, $all);
+        }
+
+        foreach ([
+            'livewire.autocomplete',
+            'livewire.date-picker',
+            'livewire.dropdown',
+            'livewire.file-upload',
+            'livewire.modal',
+            'livewire.multi-select',
+            'livewire.rich-text-editor',
+            'livewire.table',
+            'livewire.tabs',
+        ] as $key) {
+            $this->assertArrayHasKey($key, $all);
+        }
     }
 }
-

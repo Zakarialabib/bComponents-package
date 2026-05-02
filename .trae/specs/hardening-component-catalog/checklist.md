@@ -1,0 +1,10 @@
+- [x] `spec.md`, `tasks.md`, and `checklist.md` exist for this change-id and match the goal (catalog + integrity + guards).
+- [x] Every alias in `ComponentRegistry` renders without missing-view errors (no missing `resources/views/components/*.blade.php` templates for registered components).
+- [x] README is contract-accurate and links to `docs/components/index.md`.
+- [x] `docs/components/index.md` exists and links to every component page.
+- [x] Every Blade alias has a corresponding component catalog page with tag/props/slots/a11y/examples/code references.
+- [x] Every Livewire alias has a corresponding component catalog page with props/events/dependencies/examples/code references.
+- [x] Metadata repository covers the same public surface (no missing entries for registered components).
+- [x] Automated tests enforce: registry view integrity + catalog page existence + metadata coverage.
+- [x] `vendor/bin/phpunit` passes.
+- [x] `vendor/bin/phpstan analyse --no-progress --memory-limit=1G` passes.

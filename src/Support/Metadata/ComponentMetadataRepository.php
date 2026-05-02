@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Support\Metadata;
 
+use Zakarialabib\BComponents\Support\ComponentRegistry;
+
 final class ComponentMetadataRepository
 {
     public function all(): array
     {
-        return [
+        $metadata = [
             'button' => [
                 'name' => 'Button',
                 'category' => 'primitives',
@@ -190,5 +192,81 @@ final class ComponentMetadataRepository
                 'compat' => ['Blade', 'Alpine required'],
             ],
         ];
+
+        return $this->withDefaults($metadata);
+    }
+
+    private function withDefaults(array $metadata): array
+    {
+        $registry = new ComponentRegistry();
+        foreach ($registry->aliases() as $alias => $class) {
+            if (!array_key_exists($alias, $metadata)) {
+                $metadata[$alias] = [
+                    'name' => $this->titleFromAlias($alias),
+                    'category' => $this->categoryFromAlias($alias),
+                    'props' => [],
+                    'slots' => [],
+                    'a11y' => [],
+                    'compat' => ['Blade'],
+                ];
+            }
+        }
+
+        $livewire = [
+            'autocomplete' => 'Autocomplete',
+            'date-picker' => 'Date Picker',
+            'dropdown' => 'Dropdown',
+            'file-upload' => 'File Upload',
+            'modal' => 'Modal',
+            'multi-select' => 'Multi Select',
+            'rich-text-editor' => 'Rich Text Editor',
+            'table' => 'Table',
+            'tabs' => 'Tabs',
+        ];
+
+        foreach ($livewire as $alias => $name) {
+            $key = "livewire.{$alias}";
+            if (!array_key_exists($key, $metadata)) {
+                $metadata[$key] = [
+                    'name' => $name,
+                    'category' => $this->categoryFromAlias($alias),
+                    'props' => [],
+                    'slots' => [],
+                    'a11y' => [],
+                    'compat' => ['Livewire 3/4'],
+                ];
+            }
+        }
+
+        ksort($metadata);
+
+        return $metadata;
+    }
+
+    private function categoryFromAlias(string $alias): string
+    {
+        if (str_starts_with($alias, 'table')) {
+            return 'data-display';
+        }
+
+        return match ($alias) {
+            'assets' => 'foundation',
+            'container', 'grid', 'flex', 'spacer', 'divider' => 'layout',
+            'breadcrumb', 'tabs', 'tab' => 'navigation',
+            'modal', 'drawer', 'dropdown', 'select-dropdown' => 'overlays',
+            'alert', 'toast', 'badge', 'loading' => 'feedback',
+            'input', 'textarea', 'select', 'checkbox', 'radio', 'toggle', 'form-group' => 'forms',
+            'header', 'footer' => 'layout',
+            default => 'primitives',
+        };
+    }
+
+    private function titleFromAlias(string $alias): string
+    {
+        $alias = str_replace(['.', '-'], ' ', $alias);
+        $alias = preg_replace('/\\s+/', ' ', $alias) ?? $alias;
+        $alias = trim($alias);
+
+        return ucwords($alias);
     }
 }
