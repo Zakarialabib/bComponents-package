@@ -8,6 +8,42 @@ use Zakarialabib\BComponents\Support\Styles\InputStyles;
 
 class InputComponent extends BaseComponent
 {
+    public function __construct(
+        string $name = '',
+        string $type = 'text',
+        ?string $id = null,
+        mixed $value = null,
+        ?string $placeholder = null,
+        bool $required = false,
+        bool $disabled = false,
+        bool $invalid = false,
+        bool $readonly = false,
+        bool $autofocus = false,
+        string $size = 'md',
+        ?string $prefix = null,
+        ?string $suffix = null,
+        ?string $prefixIcon = null,
+        ?string $suffixIcon = null,
+    ) {
+        parent::__construct();
+
+        $this->name = $name;
+        $this->type = $type;
+        $this->id = $id;
+        $this->value = $value;
+        $this->placeholder = $placeholder;
+        $this->required = $required;
+        $this->disabled = $disabled;
+        $this->invalid = $invalid;
+        $this->readonly = $readonly;
+        $this->autofocus = $autofocus;
+        $this->size = $size;
+        $this->prefix = $prefix;
+        $this->suffix = $suffix;
+        $this->prefixIcon = $prefixIcon;
+        $this->suffixIcon = $suffixIcon;
+    }
+
     /**
      * The input type.
      *

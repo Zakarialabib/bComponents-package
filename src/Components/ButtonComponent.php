@@ -9,6 +9,51 @@ use Zakarialabib\BComponents\Support\Styles\ButtonStyles;
 
 class ButtonComponent extends BaseComponent
 {
+    public function __construct(
+        string $type = 'button',
+        string $variant = 'solid',
+        string $size = 'md',
+        string $tone = 'primary',
+        bool $disabled = false,
+        bool $loading = false,
+        bool $fullWidth = false,
+        ?string $icon = null,
+        string $iconPosition = 'left',
+        bool $iconOnly = false,
+        ?string $href = null,
+        ?string $loadingText = null,
+        ?string $color = null,
+        bool $isDisabled = false,
+        bool $isLoading = false,
+        bool $isBlock = false,
+        bool $isIconOnly = false,
+        ?string $wireClick = null,
+        ?string $alpineClick = null,
+    ) {
+        parent::__construct();
+
+        $this->type = $type;
+        $this->variant = $variant;
+        $this->size = $size;
+        $this->tone = $tone;
+        $this->disabled = $disabled;
+        $this->loading = $loading;
+        $this->fullWidth = $fullWidth;
+        $this->icon = $icon;
+        $this->iconPosition = $iconPosition;
+        $this->iconOnly = $iconOnly;
+        $this->href = $href;
+        $this->loadingText = $loadingText;
+
+        $this->color = $color;
+        $this->isDisabled = $isDisabled;
+        $this->isLoading = $isLoading;
+        $this->isBlock = $isBlock;
+        $this->isIconOnly = $isIconOnly;
+        $this->wireClick = $wireClick;
+        $this->alpineClick = $alpineClick;
+    }
+
     public string $type = 'button';
     public string $variant = 'solid';
     public string $size = 'md';

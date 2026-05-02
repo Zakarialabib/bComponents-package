@@ -24,8 +24,8 @@ class BComponentsServiceProvider extends ServiceProvider
             $this->loadViewsFrom(resource_path('views/vendor/bcomponents'), 'bcomponents');
         }
 
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'bcomponents');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bcomponents');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'bcomponents');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -65,7 +65,7 @@ class BComponentsServiceProvider extends ServiceProvider
             ], 'bcomponents-config');
 
             $this->publishes([
-                __DIR__ . '/resources/views' => resource_path('views/vendor/bcomponents'),
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/bcomponents'),
             ], 'bcomponents-views');
 
             $this->publishes([
