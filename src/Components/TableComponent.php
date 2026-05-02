@@ -64,14 +64,6 @@ class TableComponent extends BaseComponent
     }
 
     /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): \Illuminate\View\View
-    {
-        return view($this->getViewName(), $this->viewData());
-    }
-
-    /**
      * Get the validation rules that apply to the component.
      */
     public function rules(): array
@@ -93,26 +85,27 @@ class TableComponent extends BaseComponent
         return [
             'min-w-full',
             'divide-y',
-            'divide-gray-200',
             $this->striped ? 'table-striped' : '',
             $this->hoverable ? 'table-hover' : '',
             $this->bordered ? 'table-bordered' : '',
             $this->compact ? 'table-compact' : '',
             $this->dividerClasses(),
+            'divide-[color:var(--b-color-border)]',
         ];
     }
 
     /**
      * Get the wrapper classes for responsive tables.
      */
-    public function classes(): string
+    public function wrapperClasses(): string
     {
         return implode(' ', array_filter([
             $this->responsive ? 'overflow-x-auto' : '',
             'relative',
             'shadow-sm',
             'rounded-lg',
-            'border border-gray-200',
+            'border border-[color:var(--b-color-border)]',
+            'bg-[color:var(--b-color-surface)]',
         ]));
     }
 
@@ -126,5 +119,13 @@ class TableComponent extends BaseComponent
             'thick' => 'divide-y-2',
             default => 'divide-y',
         };
+    }
+
+    public function render(): \Illuminate\View\View
+    {
+        return view($this->getViewName(), array_merge(
+            $this->viewData(),
+            ['wrapperClasses' => $this->wrapperClasses()]
+        ));
     }
 }

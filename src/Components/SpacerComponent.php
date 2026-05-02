@@ -43,7 +43,7 @@ class SpacerComponent extends BaseComponent
      */
     public function render(): \Illuminate\View\View
     {
-        return view('bcomponents::components.spacer');
+        return view('bcomponents::components.spacer', $this->viewData());
     }
 
     /**

@@ -2,6 +2,6 @@
     'striped' => false,
 ])
 
-<tbody {{ $attributes->merge(['class' => 'bg-white divide-y divide-gray-200']) }}>
+<tbody {{ $attributes->merge(['class' => 'bg-[color:var(--b-color-surface)] divide-y divide-[color:var(--b-color-border)]']) }}>
     {{ $slot }}
 </tbody> 

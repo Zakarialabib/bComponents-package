@@ -1,4 +1,5 @@
 @props([
+    'tone' => null,
     'color' => 'primary',
     'size' => 'md',
     'variant' => 'solid',
@@ -7,13 +8,20 @@
     'isIconOnly' => false,
     'isDismissible' => false,
     'isCounter' => false,
-    'wireClick' => null,
+    'href' => null,
     'title' => null,
 ])
 
+@php
+    $color = $tone ?? $color;
+    $tag = $href ? 'a' : 'span';
+@endphp
 
-<div {{ $attributes }}>
-    
+<{{ $tag }}
+    {{ $attributes->merge(['class' => $classes]) }}
+    @if($href) href="{{ $href }}" @endif
+    @if($title) title="{{ $title }}" @endif
+>
     @if ($icon && $iconPosition === 'left' && !$isIconOnly)
         <i class="{{ $icon }} {{ $slot->isEmpty() ? '' : 'mr-2' }}"></i>
     @endif
@@ -44,4 +52,4 @@
             </svg>
         </button>
     @endif
-</div>
+</{{ $tag }}>

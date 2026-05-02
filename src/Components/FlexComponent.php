@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Zakarialabib\BComponents\Components;
 
-use Illuminate\View\Component;
-
 class FlexComponent extends BaseComponent
 {
     /**
@@ -57,14 +55,6 @@ class FlexComponent extends BaseComponent
         $this->items = $items;
         $this->gap = $gap;
         $this->responsive = $responsive;
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): \Illuminate\View\View
-    {
-        return view('bcomponents::components.flex');
     }
 
     /**

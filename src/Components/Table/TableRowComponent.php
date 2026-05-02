@@ -33,7 +33,7 @@ class TableRowComponent extends BaseComponent
      */
     public function render(): \Illuminate\View\View
     {
-        return view('bcomponents::components.table.row');
+        return view('bcomponents::components.table.row', $this->viewData());
     }
 
     /**
@@ -53,8 +53,8 @@ class TableRowComponent extends BaseComponent
     public function baseClasses(): array
     {
         return [
-            $this->selected ? 'bg-gray-50' : '',
-            $this->hoverable ? 'hover:bg-gray-50' : '',
+            $this->selected ? 'bg-[color:var(--b-color-surface-muted)]' : '',
+            $this->hoverable ? 'hover:bg-[color:var(--b-color-surface-muted)]' : '',
             'transition-colors',
             'duration-150',
             'ease-in-out',

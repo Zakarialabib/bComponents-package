@@ -54,7 +54,7 @@ class AccordionComponent extends BaseComponent
      * CSS classes
      */
     protected array $classes = [
-        'wrapper' => 'w-full my-2 py-5 px-2 rounded-lg group border-solid border-t border-r border-l border-b-2 border-gray-100 shadow-sm',
+        'wrapper' => 'w-full my-2 py-5 px-2 rounded-lg group border border-[color:var(--b-color-border)] bg-[color:var(--b-color-surface)] text-[color:var(--b-color-text)] shadow-sm',
         'header' => 'flex justify-between items-center text-center py-3 px-2 cursor-pointer',
         'title' => 'text-lg font-bold',
         'icon' => 'w-4 h-4 transition-transform duration-300',
@@ -122,7 +122,7 @@ class AccordionComponent extends BaseComponent
         }
         
         // Fallback to hardcoded classes
-        return 'w-full my-2 py-5 px-2 rounded-lg group border-solid border-t border-r border-l border-b-2 border-gray-100 shadow-sm';
+        return 'w-full my-2 py-5 px-2 rounded-lg group border border-[color:var(--b-color-border)] bg-[color:var(--b-color-surface)] text-[color:var(--b-color-text)] shadow-sm';
     }
     
     /**
@@ -179,7 +179,7 @@ class AccordionComponent extends BaseComponent
         // Ensure $this->attributes is a ComponentAttributeBag instance
         $attributes = $this->attributes instanceof ComponentAttributeBag
             ? $this->attributes
-            : new ComponentAttributeBag($this->attributes);
+            : new ComponentAttributeBag(is_array($this->attributes) ? $this->attributes : []);
 
         // Get or generate a unique ID
         $id = $attributes->get('id', $this->id ?? uniqid('accordion-'));

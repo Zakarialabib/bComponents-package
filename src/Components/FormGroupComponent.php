@@ -176,7 +176,7 @@ class FormGroupComponent extends BaseComponent
      */
     protected function getLabelClasses(): string
     {
-        $baseClasses = 'block text-sm font-medium text-gray-700';
+        $baseClasses = 'block text-sm font-medium text-[color:var(--b-color-text)]';
         
         if ($this->inline) {
             return $baseClasses . ' sm:mt-px sm:pt-2';

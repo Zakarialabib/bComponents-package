@@ -2,6 +2,6 @@
     'selected' => false,
 ])
 
-<tr {{ $attributes->merge(['class' => $selected ? 'bg-gray-50' : 'hover:bg-gray-50']) }}>
+<tr {{ $attributes->merge(['class' => $selected ? 'bg-[color:var(--b-color-surface-muted)]' : 'hover:bg-[color:var(--b-color-surface-muted)]']) }}>
     {{ $slot }}
 </tr> 

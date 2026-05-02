@@ -84,14 +84,14 @@ class LoadingComponent extends BaseComponent
             
             // Color
             match ($this->color) {
-                'secondary' => 'text-gray-500',
-                'success' => 'text-green-500',
-                'danger' => 'text-red-500',
-                'warning' => 'text-yellow-500',
-                'info' => 'text-blue-500',
-                'dark' => 'text-gray-900',
-                'light' => 'text-gray-100',
-                default => 'text-primary-500',
+                'secondary' => 'text-[color:var(--b-color-secondary)]',
+                'success' => 'text-[color:var(--b-color-success)]',
+                'danger' => 'text-[color:var(--b-color-danger)]',
+                'warning' => 'text-[color:var(--b-color-warning)]',
+                'info' => 'text-[color:var(--b-color-info)]',
+                'dark' => 'text-[color:var(--b-color-text)]',
+                'light' => 'text-[color:var(--b-color-surface)]',
+                default => 'text-[color:var(--b-color-primary)]',
             },
             
             // Animation

@@ -33,7 +33,7 @@ class TableCellComponent extends BaseComponent
      */
     public function render(): \Illuminate\View\View
     {
-        return view('bcomponents::components.table.cell');
+        return view('bcomponents::components.table.cell', $this->viewData());
     }
 
     /**
@@ -57,7 +57,7 @@ class TableCellComponent extends BaseComponent
             'py-4',
             $this->wrap ? 'whitespace-normal' : 'whitespace-nowrap',
             'text-sm',
-            'text-gray-500',
+            'text-[color:var(--b-color-text-muted)]',
             'text-' . $this->align,
         ];
     }

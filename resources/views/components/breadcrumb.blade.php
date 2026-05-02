@@ -1,5 +1,7 @@
+@php($classString = is_array($classes ?? null) ? implode(' ', $classes) : ($classes ?? ''))
+
 <nav aria-label="Breadcrumb">
-    <ol {{ $attributes->merge(['class' => $classes]) }}>
+    <ol class="{{ $classString }}" {{ $attributes->except('class') }}>
         @foreach($items as $index => $item)
             @php($isLast = $index === count($items) - 1)
 
@@ -31,4 +33,3 @@
         @endforeach
     </ol>
 </nav>
-

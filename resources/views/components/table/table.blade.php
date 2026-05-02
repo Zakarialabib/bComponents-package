@@ -5,20 +5,20 @@
     'compact' => false,
 ])
 
-<div {{ $attributes->merge(['class' => $classes]) }}>
+<div {{ $attributes->merge(['class' => $wrapperClasses ?? '']) }}>
     <table class="{{ $classes }}">
         @if(isset($header))
-            <thead class="bg-gray-50">
+            <thead class="bg-[color:var(--b-color-surface-muted)]">
                 {{ $header }}
             </thead>
         @endif
 
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-[color:var(--b-color-surface)] divide-y divide-[color:var(--b-color-border)]">
             {{ $slot }}
         </tbody>
 
         @if(isset($footer))
-            <tfoot class="bg-gray-50">
+            <tfoot class="bg-[color:var(--b-color-surface-muted)]">
                 {{ $footer }}
             </tfoot>
         @endif

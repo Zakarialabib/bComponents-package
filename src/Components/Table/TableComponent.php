@@ -70,10 +70,10 @@ class TableComponent extends BaseComponent
         return array_filter([
             'min-w-full',
             'divide-y',
-            'divide-gray-200',
+            'divide-[color:var(--b-color-border)]',
             $this->striped ? 'stripe-rows' : '',
-            $this->bordered ? 'border border-gray-200' : '',
-            $this->hoverable ? 'hover:bg-gray-50' : '',
+            $this->bordered ? 'border border-[color:var(--b-color-border)]' : '',
+            $this->hoverable ? 'hover:bg-[color:var(--b-color-surface-muted)]' : '',
         ]);
     }
 
@@ -87,7 +87,8 @@ class TableComponent extends BaseComponent
             'relative',
             'shadow-sm',
             'rounded-lg',
-            'border border-gray-200',
+            'border border-[color:var(--b-color-border)]',
+            'bg-[color:var(--b-color-surface)]',
         ]));
     }
 } 

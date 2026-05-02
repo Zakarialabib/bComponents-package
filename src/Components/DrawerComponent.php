@@ -46,16 +46,23 @@ class DrawerComponent extends BaseComponent
     /**
      * Create a new component instance.
      */
-    public function __construct(array $attributes = [])
+    public function __construct(
+        string $name = '',
+        bool $show = false,
+        string $position = 'right',
+        string $width = 'md',
+        bool $static = false,
+        ?string $title = null
+    )
     {
-        $this->name = $attributes['name'] ?? '';
-        $this->show = $attributes['show'] ?? false;
-        $this->position = $attributes['position'] ?? 'right';
-        $this->width = $attributes['width'] ?? 'md';
-        $this->static = $attributes['static'] ?? false;
-        $this->title = $attributes['title'] ?? null;
-        
         parent::__construct();
+
+        $this->name = $name;
+        $this->show = $show;
+        $this->position = $position;
+        $this->width = $width;
+        $this->static = $static;
+        $this->title = $title;
     }
     
     /**
