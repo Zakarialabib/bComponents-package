@@ -1,7 +1,10 @@
 <div
     x-data="{
         init() {
-            const flatpickrInstance = flatpickr(this.$refs.input, {
+            const flatpickrFn = window.flatpickr;
+            if (!flatpickrFn) return;
+
+            const flatpickrInstance = flatpickrFn(this.$refs.input, {
                 dateFormat: '{{ $format }}',
                 defaultDate: '{{ $date }}',
                 minDate: '{{ $minDate }}',
@@ -26,8 +29,7 @@
         x-ref="input"
         type="text"
         placeholder="{{ $placeholder }}"
-        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        class="w-full px-3 py-2 border border-[color:var(--b-color-border)] rounded-[var(--b-radius-md)] shadow-sm bg-[color:var(--b-color-surface)] text-[color:var(--b-color-text)] focus:outline-none focus:ring-[color:var(--b-color-primary)] focus:border-[color:var(--b-color-primary)]"
         readonly
     />
 </div>
-

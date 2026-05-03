@@ -12,9 +12,13 @@
 @if ($show)
     <div 
         {{ $attributes->merge(['class' => $classes]) }} 
-        x-data="{ open: true }" 
+        x-data="bToast({ duration: @js($duration), dismissible: @js($dismissible) })"
         x-show="open"
-        x-init="setTimeout(() => open = false, {{ $duration }})"
+        x-on:mouseenter="stopTimer()"
+        x-on:mouseleave="startTimer()"
+        x-on:focusin="stopTimer()"
+        x-on:focusout="startTimer()"
+        x-on:keydown.escape.window="close()"
         x-transition:enter="transform ease-out duration-300 transition"
         x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
         x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
@@ -72,7 +76,7 @@
                 
                 @if ($dismissible)
                     <div class="ml-4 flex-shrink-0 flex">
-                        <button type="button" @click="open = false" class="inline-flex rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button type="button" @click="close()" class="inline-flex rounded-md text-[color:var(--b-color-text-muted)] hover:text-[color:var(--b-color-text)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[color:var(--b-color-primary)]">
                             <span class="sr-only">Close</span>
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />

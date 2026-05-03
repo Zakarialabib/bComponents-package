@@ -4,7 +4,7 @@
 - `<livewire:b-date-picker />`
 
 ## Status
-- `experimental`
+- `supported`
 
 ## Public Props
 - `mixed $date`
@@ -21,7 +21,10 @@
 
 ## Dependencies
 - Alpine.js
-- Flatpickr
+- Flatpickr (bundled)
+
+Requirements:
+- Your layout MUST include `<x-b-assets />` so `flatpickr` is available.
 
 ## Accessibility
 - (no explicit markers detected in view)
@@ -29,6 +32,8 @@
 ## Usage Example
 
 ```blade
+<x-b-assets />
+
 <livewire:b-date-picker />
 ```
 
