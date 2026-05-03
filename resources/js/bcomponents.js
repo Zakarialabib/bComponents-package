@@ -40,8 +40,11 @@ Alpine.data('bOverlay', (opts = {}) => ({
 
 Alpine.data('bDropdown', (opts = {}) => ({
     open: !!opts.initialOpen,
+    name: opts.name ?? null,
     toggle() { this.open = !this.open },
     close() { this.open = false },
+    openNamed(name) { if (this.name && this.name === name) this.open = true },
+    closeNamed(name) { if (this.name && this.name === name) this.open = false },
 }))
 
 Alpine.data('bToast', (opts = {}) => ({
@@ -65,5 +68,40 @@ Alpine.data('bToast', (opts = {}) => ({
 Alpine.data('bTabs', (opts = {}) => ({
     active: opts.initial ?? null,
     setActive(value) { this.active = value },
+    tabs() {
+        return [...this.$el.querySelectorAll('[role=\"tab\"]')].filter(el => !el.hasAttribute('disabled'))
+    },
+    focusTab(index) {
+        const tabs = this.tabs()
+        const clamped = ((index % tabs.length) + tabs.length) % tabs.length
+        tabs[clamped]?.focus()
+    },
+    focusNext(currentEl) {
+        const tabs = this.tabs()
+        const idx = tabs.indexOf(currentEl)
+        this.focusTab(idx + 1)
+    },
+    focusPrev(currentEl) {
+        const tabs = this.tabs()
+        const idx = tabs.indexOf(currentEl)
+        this.focusTab(idx - 1)
+    },
+    onKeydown(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault()
+            this.focusNext(e.currentTarget)
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault()
+            this.focusPrev(e.currentTarget)
+        }
+        if (e.key === 'Home') {
+            e.preventDefault()
+            this.focusTab(0)
+        }
+        if (e.key === 'End') {
+            e.preventDefault()
+            this.focusTab(this.tabs().length - 1)
+        }
+    },
 }))
-
