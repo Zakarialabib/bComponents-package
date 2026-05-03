@@ -71,7 +71,7 @@ class BComponentsServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__ . '/../resources/css' => public_path('vendor/bcomponents/css'),
-                __DIR__ . '/../resources/js' => public_path('vendor/bcomponents/js'),
+                __DIR__ . '/../dist/js' => public_path('vendor/bcomponents/js'),
             ], 'bcomponents-assets');
         }
     }

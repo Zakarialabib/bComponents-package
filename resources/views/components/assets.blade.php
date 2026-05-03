@@ -4,6 +4,5 @@
 @endif
 
 @if (config('bcomponents.assets.include_js', true))
-    <script src="{{ asset('vendor/bcomponents/js/app.js') }}" defer></script>
+    <script src="{{ asset('vendor/bcomponents/js/bcomponents.js') }}" type="module"></script>
 @endif
-
