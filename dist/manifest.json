@@ -1,0 +1,8 @@
+{
+  "resources/js/bcomponents.js": {
+    "file": "js/bcomponents.js",
+    "name": "bcomponents",
+    "src": "resources/js/bcomponents.js",
+    "isEntry": true
+  }
+}
