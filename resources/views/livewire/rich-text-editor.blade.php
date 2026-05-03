@@ -3,14 +3,8 @@
         content: @entangle('content').live,
         editor: null,
         init() {
-            if (typeof ClassicEditor === 'undefined') {
-                const script = document.createElement('script');
-                script.src = 'https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js';
-                script.onload = () => this.initEditor();
-                document.head.appendChild(script);
-            } else {
-                this.initEditor();
-            }
+            if (!window.ClassicEditor) return;
+            this.initEditor();
         },
         initEditor() {
             const config = {
@@ -19,7 +13,7 @@
                 ...this.config
             };
             
-            ClassicEditor
+            window.ClassicEditor
                 .create(this.$refs.editor, config)
                 .then(editor => {
                     this.editor = editor;
@@ -34,9 +28,7 @@
                         editor.isReadOnly = true;
                     }
                 })
-                .catch(error => {
-                    console.error('CKEditor initialization failed:', error);
-                });
+                .catch(() => {});
         }
     }"
     x-init="init()"
@@ -44,13 +36,13 @@
     class="w-full"
 >
     <div class="mb-2">
-        <label class="block text-sm font-medium text-gray-700">
+        <label class="block text-sm font-medium text-[color:var(--b-color-text)]">
             {{ $label ?? '' }}
         </label>
         
         <div 
             x-ref="editor"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            class="mt-1 block w-full rounded-[var(--b-radius-md)] border border-[color:var(--b-color-border)] shadow-sm focus:border-[color:var(--b-color-primary)] focus:ring-[color:var(--b-color-primary)]"
             style="min-height: {{ $height }}"
         ></div>
         
@@ -59,4 +51,3 @@
         @enderror
     </div>
 </div>
-

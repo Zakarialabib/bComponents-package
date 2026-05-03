@@ -4,7 +4,7 @@
 - `<livewire:b-rich-text-editor />`
 
 ## Status
-- `experimental`
+- `supported`
 
 ## Public Props
 - `mixed $content`
@@ -20,7 +20,10 @@
 
 ## Dependencies
 - Alpine.js
-- CKEditor
+- CKEditor (bundled)
+
+Requirements:
+- Your layout MUST include `<x-b-assets />` so `ClassicEditor` is available.
 
 ## Accessibility
 - (no explicit markers detected in view)
@@ -28,6 +31,8 @@
 ## Usage Example
 
 ```blade
+<x-b-assets />
+
 <livewire:b-rich-text-editor />
 ```
 
